@@ -1,4 +1,4 @@
-FROM nlknguyen/alpine-mpich:latest
+FROM gianv9/alpine-mpich:latest
 
 USER root
 

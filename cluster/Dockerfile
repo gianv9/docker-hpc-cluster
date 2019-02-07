@@ -1,4 +1,4 @@
-FROM nlknguyen/alpine-mpich:onbuild
+FROM gianv9/alpine-mpich:onbuild
 
 # # ------------------------------------------------------------
 # # Build MPI project
