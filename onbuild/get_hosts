@@ -7,4 +7,6 @@
 # ( netstat -t | grep ESTABLISHED | awk '{print $5}' | grep "$MPI_WORKER_SERVICE_NAME" | cut -d: -f1  \
 # & getent hosts "$MPI_MASTER_SERVICE_NAME" | cut -d' ' -f1 ) | sort -u
 
-nslookup  tasks.$MPI_WORKER_SERVICE_NAME 2> /dev/null|awk 'FNR>2{print $3}'
+# nslookup  tasks.$MPI_WORKER_SERVICE_NAME 2> /dev/null|awk 'FNR>2{print $3}'
+
+dig tasks.$MPI_WORKER_SERVICE_NAME|grep tasks|awk 'FNR>2{print $5}'
