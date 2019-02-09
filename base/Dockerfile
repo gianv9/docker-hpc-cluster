@@ -6,8 +6,7 @@ MAINTAINER Nikyle Nguyen <NLKNguyen@MSN.com>
 
 ARG REQUIRE="sudo build-base"
 RUN apk update && apk upgrade \
-      && apk add --no-cache ${REQUIRE} \
-      && apk add bind-utils
+      && apk add --no-cache ${REQUIRE}
 
 
 #### INSTALL MPICH ####

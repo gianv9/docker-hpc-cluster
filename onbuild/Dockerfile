@@ -2,7 +2,8 @@ FROM gianv9/alpine-mpich:latest
 
 USER root
 
-RUN apk add --no-cache openssh 
+RUN apk add --no-cache openssh && \
+    apk add --no-cache bind-tools
 
 # # ------------------------------------------------------------
 # # Utility shell scripts
