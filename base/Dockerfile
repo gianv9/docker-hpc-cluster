@@ -8,6 +8,17 @@ ARG REQUIRE="sudo build-base"
 RUN apk update && apk upgrade \
       && apk add --no-cache ${REQUIRE}
 
+#### INSTALL PYTHON ####
+# see: https://hub.docker.com/r/frolvlad/alpine-python2/dockerfile
+RUN apk add --no-cache python && \
+    python -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip install --upgrade pip setuptools && \
+    rm -r /root/.cache && \
+    apk add python-dev && \
+    apk add python3 && \
+    apk add python3-dev
+
 
 #### INSTALL MPICH ####
 # Source is available at http://www.mpich.org/static/downloads/
@@ -43,6 +54,8 @@ RUN rm -rf /tmp/mpich-test
 WORKDIR /
 RUN rm -rf /tmp/*
 
+#### INSTALL mpi4py ####
+RUN env MPICC=/usr/local/bin/mpicc pip install mpi4py
 
 #### ADD DEFAULT USER ####
 ARG USER=mpi
