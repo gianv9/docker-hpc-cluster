@@ -1,6 +1,9 @@
-# Alpine MPICH
+# Docker HPC Cluster
 
-Docker image of Alpine Linux with  [MPICH](http://www.mpich.org/) -- portable implementation of Message Passing Interface (MPI) standard. Designed for MPI program development and deployment.
+Based on this project:
+https://github.com/NLKNguyen/alpine-mpich
+
+<!-- Docker image of Alpine Linux with  [MPICH](http://www.mpich.org/) -- portable implementation of Message Passing Interface (MPI) standard. Designed for MPI program development and deployment.
 
 Provide solution for MPI Cluster Automation with Docker containers using either Docker Compose or Docker Swarm Mode.
 
@@ -98,4 +101,4 @@ Use this GitHub repository [issues](https://github.com/NLKNguyen/alpine-mpich/is
 Suggestions and pull requests are awesome.
 
 # License MIT
-Copyright © Nikyle Nguyen
+Copyright © Nikyle Nguyen -->
