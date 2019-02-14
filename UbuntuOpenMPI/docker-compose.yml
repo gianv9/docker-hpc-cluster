@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  mpi_head:
+    image: kikohernandez92/ubuntuopenmpi
+    ports: 
+      - "22"
+
+  mpi_node: 
+    image: kikohernandez92/ubuntuopenmpi
+    deploy:
+      replicas: 10
