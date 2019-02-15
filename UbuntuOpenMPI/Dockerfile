@@ -11,7 +11,7 @@ RUN apt-get update -y && \
     apt-get install -y openssh-server python-mpi4py python-numpy \
             python-virtualenv python-scipy gcc gfortran openmpi-checkpoint binutils \
 	    nano net-tools dnsutils zip git openmpi-bin openmpi-common libopenmpi-dev
-
+RUN apt-get install -y hwloc
 RUN mkdir /var/run/sshd
 RUN echo 'root:mpi' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -66,4 +66,12 @@ COPY ./project/* /home/mpiuser
 #---------------------------------------------------------------
 
 RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
+
+RUN wget https://download.open-mpi.org/release/hwloc/v1.11/hwloc-1.11.12.tar.bz2 && \
+    tar -xvf hwloc-1.11.12.tar.bz2 && \
+    cd hwloc-1.11.12 && \
+    ./configure && \
+    ./make && \
+    ./make install
+
 RUN echo 'Why, Hello there!'
