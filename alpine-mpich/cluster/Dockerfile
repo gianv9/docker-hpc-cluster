@@ -1,4 +1,5 @@
-FROM gianv9/alpine-mpich:onbuild
+# FROM gianv9/alpine-mpich:onbuild
+FROM gianv9/docker-hpc:alpine-mpich-onbuild
 
 # # ------------------------------------------------------------
 # # Build MPI project

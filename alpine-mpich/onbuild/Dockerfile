@@ -1,4 +1,5 @@
-FROM gianv9/alpine-mpich:latest
+# FROM gianv9/alpine-mpich:latest
+FROM gianv9/docker-hpc:alpine-mpich-base
 
 USER root
 
