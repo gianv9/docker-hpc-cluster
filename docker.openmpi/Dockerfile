@@ -69,7 +69,7 @@ RUN yes |  apt-get install python-sqlalchemy
 RUN yes |  apt-get install python-suds
 RUN yes |  apt-get install ipython
 
-RUN pip install obspy
+# RUN pip install obspy
 
 #---------------------------------------------------------------
 # Install dispel4py
@@ -81,19 +81,26 @@ RUN apt-get update && apt-get install wget curl python-dev python-pip python-set
 
 # install dispel4py latest 
 WORKDIR /home/tutorial
-RUN git clone https://github.com/dispel4py/dispel4py.git
-RUN cd dispel4py && python setup.py install
+# RUN git clone https://github.com/dispel4py/dispel4py.git
+# RUN cd dispel4py && python setup.py install
 
-ADD tc_cross_correlation /home/tutorial/dispel4py/tc_cross_correlation
-RUN chown tutorial:tutorial -R /home/tutorial/dispel4py/tc_cross_correlation
-ADD command-preprocess.sh  /home/tutorial/.
-ADD command-postprocess.sh  /home/tutorial/.
-RUN chmod +x /home/tutorial/command-preprocess.sh  
-RUN chown tutorial:tutorial /home/tutorial/command-preprocess.sh
-RUN chmod +x /home/tutorial/command-postprocess.sh  
-RUN chown tutorial:tutorial /home/tutorial/command-postprocess.sh
+# ADD tc_cross_correlation /home/tutorial/dispel4py/tc_cross_correlation
+# RUN chown tutorial:tutorial -R /home/tutorial/dispel4py/tc_cross_correlation
+# ADD command-preprocess.sh  /home/tutorial/.
+# ADD command-postprocess.sh  /home/tutorial/.
+# RUN chmod +x /home/tutorial/command-preprocess.sh  
+# RUN chown tutorial:tutorial /home/tutorial/command-preprocess.sh
+# RUN chmod +x /home/tutorial/command-postprocess.sh  
+# RUN chown tutorial:tutorial /home/tutorial/command-postprocess.sh
 #---------------------------------------------------------------
 #LD_LIBRARY_PATH
 #---------------------------------------------------------------
 
 RUN export LD_LIBRARY_PATH=/usr/lib/openmpi/lib/
+RUN apt-get install -y dnsutils # dejare esto por aca (por ahora) a proposito para que la imagen no tarde mil años en construirse...
+ADD ./MPI-Splitter/* /home/tutorial/MPI-Splitter/
+RUN chown -R tutorial:tutorial /home/tutorial/MPI-Splitter
+RUN mpicc -o /home/tutorial/MPI-Splitter/Send1 /home/tutorial/MPI-Splitter/CEDS.c
+COPY get_hosts /usr/local/bin/get_hosts
+RUN chmod +x /usr/local/bin/get_hosts
+# mpiexec --mca btl_tcp_if_include 10.0.0.0/24

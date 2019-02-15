@@ -1,14 +1,14 @@
 version: '3'
 services:
     mpi_head:
-      image: dispel4py/docker.openmpi
+      image: gianv9/docker-hpc
       ports: 
        - "22"
       links: 
        - mpi_node
 
     mpi_node: 
-      image: dispel4py/docker.openmpi
+      image: gianv9/docker-hpc
       deploy:
         replicas: 10
 
