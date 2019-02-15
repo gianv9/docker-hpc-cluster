@@ -71,7 +71,7 @@ RUN wget https://download.open-mpi.org/release/hwloc/v1.11/hwloc-1.11.12.tar.bz2
     tar -xvf hwloc-1.11.12.tar.bz2 && \
     cd hwloc-1.11.12 && \
     ./configure && \
-    ./make && \
-    ./make install
+    make && \
+    make install
 
 RUN echo 'Why, Hello there!'
