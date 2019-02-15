@@ -55,6 +55,15 @@ RUN chmod +x get_hosts
 
 RUN export LD_LIBRARY_PATH=/usr/lib/openmpi/lib/
 
+#---------------------------------------------------------------
+#Copy project contents to containers
+#---------------------------------------------------------------
 
-# copy project contents to image
-COPY ./project /home/mpiuser
+COPY ./project/* /home/mpiuser
+
+#---------------------------------------------------------------
+#Run MPI configs
+#---------------------------------------------------------------
+
+RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
+RUN echo 'Why, Hello there!'
