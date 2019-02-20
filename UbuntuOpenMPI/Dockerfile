@@ -1,17 +1,17 @@
-# Build this image:  docker build -t mpi .
+# 
 #
 
-FROM ubuntu:14.04
-MAINTAINER Ole Weidner <ole.weidner@ed.ac.uk>
+FROM ubuntu:18.04
+#MAINTAINER Ole Weidner <ole.weidner@ed.ac.uk> All credit goes to him, his image served a great inspiration for this project.
+MAINTAINER José Francisco Hernández Balestrini <jfhernandezb.11@est.ucab.edu.ve>
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y openssh-server python-mpi4py python-numpy \
-            python-virtualenv python-scipy gcc gfortran openmpi-checkpoint binutils \
+            python-virtualenv python-scipy gcc gfortran openmpi-doc binutils \
 	    nano net-tools dnsutils zip git openmpi-bin openmpi-common libopenmpi-dev
-RUN apt-get install -y hwloc
 RUN mkdir /var/run/sshd
 RUN echo 'root:mpi' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -32,7 +32,7 @@ ENV HOME /home/mpiuser
 RUN echo 'mpiuser:123456' | chpasswd
 
 # ------------------------------------------------------------
-# Set-Up SSH with our Github deploy key
+# Set-Up SSH & Add "get_hosts" script
 # ------------------------------------------------------------
 
 RUN mkdir /home/mpiuser/.ssh/
@@ -53,7 +53,7 @@ RUN chmod +x get_hosts
 #LD_LIBRARY_PATH
 #---------------------------------------------------------------
 
-RUN export LD_LIBRARY_PATH=/usr/lib/openmpi/lib/
+RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openmpi/lib/
 
 #---------------------------------------------------------------
 #Copy project contents to containers
@@ -62,16 +62,10 @@ RUN export LD_LIBRARY_PATH=/usr/lib/openmpi/lib/
 COPY ./project/* /home/mpiuser
 
 #---------------------------------------------------------------
-#Run MPI configs
+#Add BTL TCP MCA Params to OMPI and compile Hello World
 #---------------------------------------------------------------
 
 RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
-
-RUN wget https://download.open-mpi.org/release/hwloc/v1.11/hwloc-1.11.12.tar.bz2 && \
-    tar -xvf hwloc-1.11.12.tar.bz2 && \
-    cd hwloc-1.11.12 && \
-    ./configure && \
-    make && \
-    make install
-
+RUN mpicc -o /home/mpiuser/HW /home/mpiuser/HW.c && mpicc -o /home/mpiuser/Send1 /home/mpiuser/CEDS.c
+RUN chown -R mpiuser:mpiuser /home/mpiuser
 RUN echo 'Why, Hello there!'
