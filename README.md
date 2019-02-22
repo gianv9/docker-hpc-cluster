@@ -13,7 +13,7 @@ The images/flavours offered by this projects are as follows:
 - ubuntu-opemmpi: build upon the project by Data Architect [Rosa Filgueira](https://github.com/dispel4py/docker.openmpi). The ubuntu version was updated, the dockerfile was rewritten and the mpiversion has been upgraded. Python support was already present, and it still works after the upgrade process previously described.
 
 Mentioned Authors Info/Websites:
-Rosa Filgueira
-https://www.rosafilgueira.com/
+-Rosa Filgueira
+  - https://www.rosafilgueira.com/
 Nikyle Nguyen
-https://www.linkedin.com/in/nlknguyen/
+  - https://www.linkedin.com/in/nlknguyen/
