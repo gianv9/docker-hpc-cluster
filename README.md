@@ -13,7 +13,12 @@ The images/flavours offered by this projects are as follows:
 - ubuntu-opemmpi: build upon the project by Data Architect [Rosa Filgueira](https://github.com/dispel4py/docker.openmpi). The ubuntu version was updated, the dockerfile was rewritten and the mpiversion has been upgraded. Python support was already present, and it still works after the upgrade process previously described.
 
 Roadmap:
-
+- Adding Local Storage support.
+- Stadarizing the launching process for all the flavours.
+- Installing the Slurm Scheduler and resource manager.
+- Running and comparing the performance of different programs within the different flavours and a traditional cluster environment.
+- Installing More runtimes for parallel computing, such as erlang scala and julia.
+- More comparisons.
 
 The flavours are pushed to a [Docker Hub](https://hub.docker.com/r/gianv9/docker-hpc) repository as tags.
 
