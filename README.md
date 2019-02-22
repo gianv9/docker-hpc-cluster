@@ -12,6 +12,9 @@ The images/flavours offered by this projects are as follows:
 - alpine-mpich: built upon the project by Software engineer [Nikyle Nguyen](https://github.com/NLKNguyen/alpine-mpich). After fixing networking issues preventing the comunication between the master node and the slave nodes on the original image, parallel python script execution support was added by installing mpi4py.
 - ubuntu-opemmpi: build upon the project by Data Architect [Rosa Filgueira](https://github.com/dispel4py/docker.openmpi). The ubuntu version was updated, the dockerfile was rewritten and the mpiversion has been upgraded. Python support was already present, and it still works after the upgrade process previously described.
 
+Roadmap:
+
+
 The flavours are pushed to a [Docker Hub](https://hub.docker.com/r/gianv9/docker-hpc) repository as tags.
 
 Mentioned Authors Info/Websites:
