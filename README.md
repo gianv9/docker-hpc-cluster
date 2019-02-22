@@ -15,6 +15,7 @@ The images/flavours offered by this projects are as follows:
 Mentioned Authors Info/Websites:
 -Rosa Filgueira
   - https://www.rosafilgueira.com/
+  - https://www.linkedin.com/in/rosa-filgueira-vicente-8b2b2227/
 - Nikyle Nguyen
   - https://www.linkedin.com/in/nlknguyen/
 
