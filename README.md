@@ -1,6 +1,5 @@
 # docker-hpc-cluster
-HPC cluster deployment solution for different environments, requirements and devices
-The main goal of this project is to provide a single docker solution that spans accross multiple use cases, depending on: 
+HPC cluster deployment solution for different environments, requirements and devices. The main goal of this project is to provide a single docker solution, consisting of several images, that spans accross multiple use cases (one for each case), depending on: 
 hardware requirements or availability,
 environment needs.
 
