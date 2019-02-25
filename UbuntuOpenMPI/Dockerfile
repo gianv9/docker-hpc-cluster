@@ -59,7 +59,7 @@ RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openmpi/lib/
 #Copy project contents to containers
 #---------------------------------------------------------------
 
-COPY ./../programs /home/mpiuser
+COPY ./programs /home/mpiuser
 
 #---------------------------------------------------------------
 #Add BTL TCP MCA Params to OMPI and compile Hello World
