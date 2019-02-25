@@ -66,6 +66,6 @@ COPY ./programs /home/mpiuser
 #---------------------------------------------------------------
 
 RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
-RUN mpicc -o /home/mpiuser/HW /home/mpiuser/HW.c && mpicc -o /home/mpiuser/Send1 /home/mpiuser/CEDS.c
+RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
 RUN chown -R mpiuser:mpiuser /home/mpiuser
 RUN echo 'Why, Hello there!'
