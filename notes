@@ -1,0 +1,23 @@
+ideas 26/02/19:
+
+Now that we've found one way to set the shared filesystem on the nodes 
+(see my dockerhub starred repos).
+We must take into consideration some other factors like speed, the architecture the found image uses,
+how hard or how well is it going to be to integrate the image into the project, so the nodes can mount it.
+For example, there are other plugins and connectors that enable storage accross the containers within
+a swarm cluster.
+
+One main advantage of using the nfs share image found at dockerhub is that is can be deployed
+as a service, which follows the microservice architecture docker promotes and supports.
+
+also, we must define a standarized way to launch the clusters.
+The best way i can think of is to define a compose file that launches the alpine cluster.
+but that is going to bring some challenges:
+- how to parametrize the names, ports, repos that are used to create/launch the image? 
+- how is the solution going to scale up or down properly by using docker stacks?
+
+next steps,
+
+now that we now that the shared filesystem problem is already solved, 
+we must standarize the way the projects are launched. After that, the previously mentioned
+filesystem share will be done.
