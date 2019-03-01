@@ -3,16 +3,19 @@ version: '3.3'
 services:
   image_build_and_upload:
     build: .
-    image: ${NODE_IP}:5000/gianv9/docker-hpc:alpine-mpich-latest  # goes to local registry
+    # image: ${NODE_IP}:5000/gianv9/docker-hpc:alpine-mpich-latest  # goes to local registry
+    image: gianv9/docker-hpc:alpine-mpich-latest
     # depends_on:
     #   - "registry"
-    command: ["./wait-for-it.sh",
-              # "-t 1",
-              "${NODE_IP}:5000",
-              "--",
-              "echo",
-              "registry up",
-              "building and uploading"]
+
+    # command: ["./wait-for-it.sh",
+    #           # "-t 1",
+    #           "${NODE_IP}:5000",
+    #           "--",
+    #           "echo",
+    #           "registry up",
+    #           "building and uploading"]
+
     # networks:
     #   - default
 

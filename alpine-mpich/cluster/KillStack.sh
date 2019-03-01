@@ -2,4 +2,4 @@
 
 docker stack rm test
 
-docker-compose -f launch-registry.yml down
+# docker-compose -f launch-registry.yml down

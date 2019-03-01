@@ -21,3 +21,22 @@ next steps,
 now that we now that the shared filesystem problem is already solved, 
 we must standarize the way the projects are launched. After that, the previously mentioned
 filesystem share will be done.
+
+
+01/03/18:
+
+It is important that lanching stript uses the user's account (just like on the alpine projetc),
+So that anyone is able to push and pull the images to and from their own account's repo.
+Otherwise they aren't going to be able to launch the cluster.
+
+Note: we must remember to specify the thought process we went through when starting this project.
+For example, we had the idea (automatically spawn a cluster by using docker containers), but as 
+we searched for similar solutions we came accross two projects (nguyen's and filgueira's) on which
+we focused on. So instead of doing the same thing they did again (reinventing the wheel), we decided
+to build on top of those projects and improve them even more, integrating them into a single, very
+simple to use, and multi envirornment hpc cluster deployment project.
+
+Then we also found an eyeopening article about hpc and mpi (here we put the reference to the canadian
+guy's article), that dives into the history and future of mpi as a thechlonogy on the hpc world.
+which in turn lead us to further research into the currently used hpc programming solution such as
+earlang and julia.
