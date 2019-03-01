@@ -1,26 +1,41 @@
-version: "2"
+version: '3.3'
 
 services:
-  registry:
-    image: registry
-    ports:
-      - "${REGISTRY_PORT}:5000"
+  # registry:
+  #   image: registry
+  #   ports:
+  #     - "${REGISTRY_PORT}:5000"
 
   master:
-    image: $REGISTRY_ADDR:$REGISTRY_PORT/$IMAGE_NAME
+    image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
     user: root
     entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     ports:
-      - "${SSH_PORT}:22"
+      - "2222:22"
     networks:
-      - net
+      - cluster_net
 
   worker:
-    image: $REGISTRY_ADDR:$REGISTRY_PORT/$IMAGE_NAME
+    image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
     user: root
     entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     networks:
-      - net
+      - cluster_net
+
+# networks:
+#   default:
+#     external:
+#       name: cluster_net
 
 networks:
-  net:
+  # net:
+  cluster_net:
+    driver: overlay
+    # enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 10.0.9.0/24
+      # -
+      #   subnet: 2001:3984:3989::/64
