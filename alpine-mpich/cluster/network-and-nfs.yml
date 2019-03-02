@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+
+  nfs_server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    privileged: true
+    volumes:
+      - "./programs:/nfsshare"
+    environment:
+      SHARED_DIRECTORY: /nfsshare
+    ports:
+      - "2049:2049"
+    # deploy:
+    #   placement:
+    #     constraints: [node.role == manager]
+
+    # For the static ip to be assigned you must use docker-compose
+    # this is currently not supported on docker stack
+    # if you deploy as a stack you must resolve the ip of the server through dns lookups
+    networks: 
+      net:
+        ipv4_address: 10.0.9.252
+
+networks:
+  # net:
+  net:
+    driver: overlay
+    # enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 10.0.9.0/24
+      # -
+      #   subnet: 2001:3984:3989::/64

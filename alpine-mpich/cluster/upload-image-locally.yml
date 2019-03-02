@@ -4,7 +4,7 @@ services:
   image_build_and_upload:
     build: .
     # image: ${NODE_IP}:5000/gianv9/docker-hpc:alpine-mpich-latest  # goes to local registry
-    image: gianv9/docker-hpc:alpine-mpich-latest
+    image: ${IMAGE_NAME}
     # depends_on:
     #   - "registry"
 
