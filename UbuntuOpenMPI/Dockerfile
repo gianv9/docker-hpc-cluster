@@ -2,9 +2,8 @@
 #
 
 FROM ubuntu:18.04
-#MAINTAINER Ole Weidner <ole.weidner@ed.ac.uk> All credit goes to him, his image served a great inspiration for this project.
-MAINTAINER José Francisco Hernández Balestrini <jfhernandezb.11@est.ucab.edu.ve>
 
+LABEL mantainer=["Gianfranco Verrocchi","Jose F. Balestrini"] creator="Ole Weidner <ole.weidner@ed.ac.uk>"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && \
@@ -30,6 +29,7 @@ RUN adduser --disabled-password --gecos "" mpiuser && \
     echo "mpiuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 ENV HOME /home/mpiuser
 RUN echo 'mpiuser:123456' | chpasswd
+RUN passwd -dl mpiuser
 
 # ------------------------------------------------------------
 # Set-Up SSH & Add "get_hosts" script
@@ -45,9 +45,13 @@ RUN chmod -R 600 /home/mpiuser/.ssh/* && \
     chown -R mpiuser:mpiuser /home/mpiuser/.ssh
 
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
-ADD get_hosts /get_hosts
-RUN chmod +x get_hosts
+# CMD ["/usr/sbin/sshd", "-D"]
+ADD find_workers /usr/local/bin/find_workers
+RUN chmod +x /usr/local/bin/find_workers
+ADD mpi_bootstrap /usr/local/bin/mpi_bootstrap
+RUN chmod +x /usr/local/bin/mpi_bootstrap
+ADD auto_update_hosts /usr/local/bin/auto_update_hosts
+RUN chmod +x /usr/local/bin/auto_update_hosts
 
 #---------------------------------------------------------------
 #LD_LIBRARY_PATH
@@ -68,4 +72,8 @@ COPY ./programs /home/mpiuser
 RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
 RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
 RUN chown -R mpiuser:mpiuser /home/mpiuser
-RUN echo 'Why, Hello there!'
+
+RUN chmod +x /home/mpiuser/*.py
+# RUN echo 'Why, Hello there!'
+
+USER root

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Include the variables that store the Docker service names
+# shellcheck disable=SC1091
+. /etc/opt/service_names
+
+dig tasks.$MPI_WORKER_SERVICE_NAME|grep tasks|awk 'FNR>2{print $5}'
+

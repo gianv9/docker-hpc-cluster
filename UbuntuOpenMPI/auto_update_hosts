@@ -1,0 +1,11 @@
+#!/bin/sh
+
+hosts=$(find_workers)
+printf "%s\n" $(find_workers) > "$1"
+
+while sleep 2
+do
+  current_hosts=$(find_workers)
+  [ "$hosts" != "$current_hosts" ] && printf "%s\n" "$current_hosts" > "$1"
+  hosts=$current_hosts
+done

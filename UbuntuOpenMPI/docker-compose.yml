@@ -1,12 +1,16 @@
-version: '3'
+version: '3.3'
 
 services:
-  mpi_head:
+  master:
     image: gianv9/docker-hpc:ubuntu-openmpi-latest
     ports: 
       - "22"
+    user: "root"
+    entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
 
-  mpi_node: 
+  worker: 
     image: gianv9/docker-hpc:ubuntu-openmpi-latest
+    user: "root"
+    entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     deploy:
-      replicas: 10
+      replicas: ${REPLICAS}
