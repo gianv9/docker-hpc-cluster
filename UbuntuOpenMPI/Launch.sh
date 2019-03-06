@@ -1,6 +1,7 @@
 #!/bin/sh
 export STACK_TAG=docker-hpc
 export REPLICAS=4
+export IMAGE_NAME=gianv9/docker-hpc:ubuntu-openmpi-latest
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG
 echo 'Please wait a couple of minutes until the cluster finishes configuring itself'
 # sleep 2m

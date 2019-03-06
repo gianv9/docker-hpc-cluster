@@ -36,35 +36,38 @@ MPI_MASTER_SERVICE_NAME=${MPI_MASTER_SERVICE_NAME}
 MPI_WORKER_SERVICE_NAME=${MPI_WORKER_SERVICE_NAME}
 EOF
 
+# Start ssh server
+# /usr/sbin/sshd -D &
+
 case $ROLE in
     "master")
 
+        # /usr/sbin/sshd -D &
         # # Auto update default host file in background and dumb all output
         auto_update_hosts "/etc/openmpi/openmpi-default-hostfile" > /dev/null 2>&1 &
+        # /usr/sbin/sshd -D
 
         # find_workers > /etc/openmpi/openmpi-default-hostfile
-        # Start ssh server
-        /usr/sbin/sshd -D
         ;;
 
 
     "worker")
 
         # Start ssh server in background
-        # /usr/sbin/sshd -D &
-        /usr/sbin/sshd -D &
+        # /usr/sbin/sshd -D
 
 
         # # Keep trying to connect to master node and stay there indefinitely so that master node can see
         # # the connected hosts that are ready for MPI work
-        while sleep 1
+        while sleep 2
         do
-            # shellcheck disable=SC2086
-            ssh -T -o "StrictHostKeyChecking no"   \
-                -i "/home/mpiuser/.ssh/id_rsa"      \
-                mpiuser@master \
-                "tail -f /dev/null"
+            # # shellcheck disable=SC2086
+            # ssh -T -o "StrictHostKeyChecking no"   \
+            #     -i "/home/mpiuser/.ssh/id_rsa"      \
+            #     mpiuser@master \
+            #     "tail -f /dev/null"
         done
+        # /usr/sbin/sshd -D
         ;;
     *)
         echo 'role argument only accepts "master" or "worker"'

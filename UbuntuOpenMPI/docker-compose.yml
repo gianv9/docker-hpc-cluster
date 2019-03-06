@@ -2,15 +2,56 @@ version: '3.3'
 
 services:
   master:
-    image: gianv9/docker-hpc:ubuntu-openmpi-latest
+    # image: gianv9/docker-hpc:ubuntu-openmpi-latest
+    image: ${IMAGE_NAME}
     ports: 
-      - "22"
-    user: "root"
-    entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
+      - "2222:22"
+    user: root
+    # entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
+    entrypoint: [
+      "auto_update_hosts",
+      "role=master", 
+      "mpi_master_service_name=master", 
+      "mpi_worker_service_name=worker"
+      # "openmpi_hostfile=/etc/openmpi/openmpi-default-hostfile"
+      ]
+    # entrypoint: ["bash -c auto_update_hosts role=master mpi_master_service_name=master mpi_worker_service_name=worker openmpi_hostfile='/etc/openmpi/openmpi-default-hostfile' && /usr/sbin/sshd"]
+    # entrypoint: ["/usr/sbin/sshd", "-D"]
+    # command:
+    # networks: 
+    #   - net
+    networks: 
+      net:
+        # ipv4_address: 10.0.9.1
 
   worker: 
-    image: gianv9/docker-hpc:ubuntu-openmpi-latest
-    user: "root"
-    entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
+    # image: gianv9/docker-hpc:ubuntu-openmpi-latest
+    image: ${IMAGE_NAME}
+    user: root
+    entrypoint: [
+      "auto_update_hosts",
+      "role=worker"
+      ]
+    # entrypoint: ["/usr/sbin/sshd", "-D"]
+    # entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     deploy:
       replicas: ${REPLICAS}
+    networks: 
+      net:
+
+# networks:
+#   default:
+#     external:
+#       name: ubuntuopenmpi_net
+
+networks:
+  # net:
+  net:
+    driver: overlay
+    # enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.0.9.0/24
+    # driver_opts:
+    #   com.docker.network.bridge.name: br_test

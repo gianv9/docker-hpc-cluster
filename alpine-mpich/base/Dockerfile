@@ -61,7 +61,7 @@ RUN env MPICC=/usr/local/bin/mpicc pip install mpi4py
 RUN apk add --no-cache nfs-utils rpcbind
 
 #### ADD DEFAULT USER ####
-ARG USER=mpi
+ARG USER=mpiuser
 ENV USER ${USER}
 RUN adduser -D ${USER} \
       && echo "${USER}   ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers

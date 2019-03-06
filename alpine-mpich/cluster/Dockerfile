@@ -13,7 +13,7 @@ FROM gianv9/docker-hpc:alpine-mpich-onbuild
 # Copy the content of `project` directory in the host machine to 
 # the current working directory in this Docker image
 COPY ./programs .
-RUN sudo chown -R mpi:mpi ./*
+RUN sudo chown -R mpiuser:mpiuser ./*
 RUN sudo chmod +x *.py
 # Normal build command
 RUN mpicc -o mpi_hello_world mpi_hello_world.c

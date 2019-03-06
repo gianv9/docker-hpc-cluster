@@ -1,11 +1,59 @@
 #!/bin/sh
 
-hosts=$(find_workers)
-printf "%s\n" $(find_workers) > "$1"
 
-while sleep 2
+
+#######################
+# ARGUMENTS PARSER
+
+while [ "$1" != "" ];
 do
-  current_hosts=$(find_workers)
-  [ "$hosts" != "$current_hosts" ] && printf "%s\n" "$current_hosts" > "$1"
-  hosts=$current_hosts
+    PARAM=$(echo "$1" | awk -F= '{print $1}')
+    VALUE=$(echo "$1" | awk -F= '{print $2}')
+
+    case $PARAM in
+        role)
+            [ "$VALUE" ] && ROLE=$VALUE
+            ;;
+        mpi_master_service_name)
+            [ "$VALUE" ] && MPI_MASTER_SERVICE_NAME=$VALUE
+            ;;
+        mpi_worker_service_name)
+            [ "$VALUE" ] && MPI_WORKER_SERVICE_NAME=$VALUE
+            ;;
+        # openmpi_hostfile)
+        #     [ "$VALUE" ] && OPENMPI_HOSTFILE=$VALUE
+        #     ;;
+        *)
+            echo "ERROR: unknown parameter \"$PARAM\""
+            exit 1
+            ;;
+    esac
+    shift
 done
+
+cat > /etc/opt/service_names <<- EOF
+MPI_MASTER_SERVICE_NAME=${MPI_MASTER_SERVICE_NAME}
+MPI_WORKER_SERVICE_NAME=${MPI_WORKER_SERVICE_NAME}
+# OPENMPI_HOSTFILE=${OPENMPI_HOSTFILE}
+EOF
+
+case $ROLE in
+    master)
+      /usr/sbin/sshd -D &
+      hosts=$(find_workers)
+      printf "%s\n" $(find_workers) > /etc/openmpi/openmpi-default-hostfile
+
+      while sleep 2
+      do
+        current_hosts=$(find_workers)
+        [ "$hosts" != "$current_hosts" ] && printf "%s\n" "$current_hosts" > /etc/openmpi/openmpi-default-hostfile
+        hosts=$current_hosts
+      done
+    ;;
+    worker)
+      /usr/sbin/sshd -D
+    ;;
+    *)
+      break
+    ;;
+esac

@@ -29,7 +29,7 @@ RUN adduser --disabled-password --gecos "" mpiuser && \
     echo "mpiuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 ENV HOME /home/mpiuser
 RUN echo 'mpiuser:123456' | chpasswd
-RUN passwd -dl mpiuser
+# RUN passwd -dl mpiuser
 
 # ------------------------------------------------------------
 # Set-Up SSH & Add "get_hosts" script
@@ -37,9 +37,9 @@ RUN passwd -dl mpiuser
 
 RUN mkdir /home/mpiuser/.ssh/
 ADD ssh/config /home/mpiuser/.ssh/config
-ADD ssh/id_rsa.mpi /home/mpiuser/.ssh/id_rsa
-ADD ssh/id_rsa.mpi.pub /home/mpiuser/.ssh/id_rsa.pub
-ADD ssh/id_rsa.mpi.pub /home/mpiuser/.ssh/authorized_keys
+ADD ssh/id_rsa /home/mpiuser/.ssh/id_rsa
+ADD ssh/id_rsa.pub /home/mpiuser/.ssh/id_rsa.pub
+ADD ssh/id_rsa.pub /home/mpiuser/.ssh/authorized_keys
 
 RUN chmod -R 600 /home/mpiuser/.ssh/* && \
     chown -R mpiuser:mpiuser /home/mpiuser/.ssh
@@ -48,8 +48,8 @@ EXPOSE 22
 # CMD ["/usr/sbin/sshd", "-D"]
 ADD find_workers /usr/local/bin/find_workers
 RUN chmod +x /usr/local/bin/find_workers
-ADD mpi_bootstrap /usr/local/bin/mpi_bootstrap
-RUN chmod +x /usr/local/bin/mpi_bootstrap
+# ADD mpi_bootstrap /usr/local/bin/mpi_bootstrap
+# RUN chmod +x /usr/local/bin/mpi_bootstrap
 ADD auto_update_hosts /usr/local/bin/auto_update_hosts
 RUN chmod +x /usr/local/bin/auto_update_hosts
 
@@ -65,15 +65,21 @@ RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openmpi/lib/
 
 COPY ./programs /home/mpiuser
 
-#---------------------------------------------------------------
-#Add BTL TCP MCA Params to OMPI and compile Hello World
-#---------------------------------------------------------------
 
-RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
+# RUN echo 'btl_tcp_if_exclude = lo,eth0,eth2' > /etc/openmpi/openmpi-mca-params.conf
+
 RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
 RUN chown -R mpiuser:mpiuser /home/mpiuser
 
 RUN chmod +x /home/mpiuser/*.py
 # RUN echo 'Why, Hello there!'
 
-USER root
+# USER root
+#---------------------------------------------------------------
+#Add BTL TCP MCA Params to OMPI and compile Hello World
+#---------------------------------------------------------------
+# RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
+RUN echo 'btl_tcp_if_include = 10.0.9.0/24' > /etc/openmpi/openmpi-mca-params.conf
+# RUN echo 'oob_tcp_if_include = eth0\nbtl_tcp_if_exclude = lo,eth1,eth2' > /etc/openmpi/openmpi-mca-params.conf
+RUN chown  mpiuser:mpiuser /etc/openmpi/openmpi-default-hostfile
+RUN chown -R mpiuser:mpiuser /etc/opt
