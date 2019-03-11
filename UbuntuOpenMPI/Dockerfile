@@ -2,9 +2,8 @@
 #
 
 FROM ubuntu:18.04
-#MAINTAINER Ole Weidner <ole.weidner@ed.ac.uk> All credit goes to him, his image served a great inspiration for this project.
-MAINTAINER José Francisco Hernández Balestrini <jfhernandezb.11@est.ucab.edu.ve>
 
+LABEL mantainer=["Gianfranco Verrocchi","Jose F. Balestrini"] creator="Ole Weidner <ole.weidner@ed.ac.uk>"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && \
