@@ -25,7 +25,7 @@ else
         IMAGE_NAME=${alpine_mpich[0]}
         STACK_TAG=${alpine_mpich[2]}
         REPLICAS=4
-        SSH_PARAMS='-q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222'
+        CLUSTER_LOGIN_COMMAND='ssh -q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1'
         # LOGIN=0
 fi
 
@@ -66,7 +66,7 @@ else
                 fi
                 # Make sure the key has the right permissions
                 chmod 0600 ssh/id_rsa*
-                ssh $SSH_PARAMS mpiuser@172.17.0.1
+                $CLUSTER_LOGIN_COMMAND
                 shift
                 exit 0
                 ;;
@@ -216,4 +216,4 @@ docker stack deploy --compose-file docker-compose.yml $STACK_TAG
 echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
-./wait-for-it.sh -t 120 172.17.0.1:2222 -- "ssh $SSH_PARAMS mpiuser@172.17.0.1" # 2> /dev/null
+./wait-for-it.sh -t 120 172.17.0.1:2222 -- $CLUSTER_LOGIN_COMMAND # 2> /dev/null
