@@ -63,6 +63,7 @@ RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openmpi/lib/
 #---------------------------------------------------------------
 
 COPY ./programs /home/mpiuser
+RUN chmod +x /home/mpiuser/*.py
 
 #---------------------------------------------------------------
 #Add BTL TCP MCA Params to OMPI and compile Hello World
