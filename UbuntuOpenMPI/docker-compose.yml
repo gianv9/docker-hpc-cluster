@@ -20,8 +20,8 @@ services:
     # command:
     # networks: 
     #   - net
-    networks: 
-      net:
+    # networks: 
+    #   net:
         # ipv4_address: 10.0.9.1
 
   worker: 
@@ -36,8 +36,8 @@ services:
     # entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     deploy:
       replicas: ${REPLICAS}
-    networks: 
-      net:
+    # networks: 
+    #   net:
 
 # networks:
 #   default:
