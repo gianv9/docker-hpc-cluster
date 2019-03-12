@@ -36,9 +36,9 @@ RUN echo 'mpiuser:123456' | chpasswd
 
 RUN mkdir /home/mpiuser/.ssh/
 ADD ssh/config /home/mpiuser/.ssh/config
-ADD ssh/id_rsa.mpi /home/mpiuser/.ssh/id_rsa
-ADD ssh/id_rsa.mpi.pub /home/mpiuser/.ssh/id_rsa.pub
-ADD ssh/id_rsa.mpi.pub /home/mpiuser/.ssh/authorized_keys
+ADD ssh/id_rsa /home/mpiuser/.ssh/id_rsa
+ADD ssh/id_rsa.pub /home/mpiuser/.ssh/id_rsa.pub
+ADD ssh/id_rsa.pub /home/mpiuser/.ssh/authorized_keys
 
 RUN chmod -R 600 /home/mpiuser/.ssh/* && \
     chown -R mpiuser:mpiuser /home/mpiuser/.ssh
