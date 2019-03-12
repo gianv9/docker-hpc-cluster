@@ -44,14 +44,14 @@ services:
 #     external:
 #       name: ubuntuopenmpi_net
 
-networks:
-  # net:
-  net:
-    driver: overlay
-    # enable_ipv6: true
-    ipam:
-      driver: default
-      config:
-      - subnet: 10.0.9.0/24
+# networks:
+#   # net:
+#   net:
+#     driver: overlay
+#     # enable_ipv6: true
+#     ipam:
+#       driver: default
+#       config:
+#       - subnet: 10.0.9.0/24
     # driver_opts:
     #   com.docker.network.bridge.name: br_test
