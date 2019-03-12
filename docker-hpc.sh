@@ -66,7 +66,7 @@ else
                 fi
                 # Make sure the key has the right permissions
                 chmod 0600 ssh/id_rsa*
-                $CLUSTER_LOGIN_COMMAND
+                eval $CLUSTER_LOGIN_COMMAND
                 shift
                 exit 0
                 ;;
@@ -216,4 +216,4 @@ docker stack deploy --compose-file docker-compose.yml $STACK_TAG
 echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
-./wait-for-it.sh -t 120 172.17.0.1:2222 -- $CLUSTER_LOGIN_COMMAND # 2> /dev/null
+./wait-for-it.sh -t 120 172.17.0.1:2222 -- eval $CLUSTER_LOGIN_COMMAND # 2> /dev/null
