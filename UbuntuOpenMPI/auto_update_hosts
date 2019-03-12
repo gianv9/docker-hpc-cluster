@@ -42,7 +42,9 @@ case $ROLE in
       /usr/sbin/sshd -D &
       hosts=$(find_workers)
       printf "%s\n" $(find_workers) > /etc/openmpi/openmpi-default-hostfile
-
+      echo 'btl_tcp_if_exclude = lo,eth0,eth2' >> /etc/openmpi/openmpi-mca-params.conf
+      echo 'btl=^openib' >> /etc/openmpi/openmpi-mca-params.conf
+      echo 'oob_tcp_if_exclude = lo,eth0,eth2' >> /etc/openmpi/openmpi-mca-params.conf
       while sleep 2
       do
         current_hosts=$(find_workers)
@@ -52,6 +54,9 @@ case $ROLE in
     ;;
     worker)
       /usr/sbin/sshd -D
+      echo 'btl_tcp_if_exclude = lo,eth1' >> /etc/openmpi/openmpi-mca-params.conf
+      echo 'btl=^openib' >> /etc/openmpi/openmpi-mca-params.conf
+      echo 'oob_tcp_if_exclude = lo,eth1' >> /etc/openmpi/openmpi-mca-params.conf
     ;;
     *)
       break
