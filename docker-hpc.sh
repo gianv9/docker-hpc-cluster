@@ -67,9 +67,49 @@ else
         case "$1" in
             -l|--login)
                 #     LOGIN=1
-                ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
-                exit 0
+                # if [[ CHANGED_DIRECTORY == 1 ]];then
+
+                # else
+                #         cd $DEFAULT_PROJECT_LOCATION
+                # fi
+                # ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
+                # exit 0
                 #     break
+                shift
+                if test $# -gt 0; then
+                #     REPLICAS=$1
+                        # exit 0
+                        case $1 in
+                        alpine_mpich)
+                                # IMAGE_NAME=${alpine_mpich[0]}
+                                cd ${alpine_mpich[1]}
+                                # CHANGED_DIRECTORY=1
+                                # STACK_TAG=${alpine_mpich[2]}
+                        ;;
+                        ubuntu_openmpi)
+                                # IMAGE_NAME=${ubuntu_openmpi[0]}
+                                cd ${ubuntu_openmpi[1]}
+                                # CHANGED_DIRECTORY=1
+                                # STACK_TAG=${ubuntu_openmpi[2]}
+                        ;;
+                        *)      
+                                echo -e "\e[91m===> Unkown image $1!"
+                                echo -e "\e[93m===> using default image alpine_mpich instead\e[0m"
+                                break
+                                # exit 0
+                        ;;
+                        esac
+                else
+                        echo -e "\e[91m===> -l|--login"
+                        echo -e "===> No image specified"
+                        echo -e "\e[93m===> Using default image $IMAGE_NAME instead\e[0m"
+                        cd ${alpine_mpich[1]}
+                        sleep .5
+                #     REPLICAS=4
+                fi
+                ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
+                shift
+                exit 0
                 ;;
             -h|--help)
                 echo "This is a script for Launching docker-hpc clusters"
