@@ -2,7 +2,7 @@ FROM alpine:3.9
 # In case the main package repositories are down, use the alternative base image:
 # FROM gliderlabs/alpine:3.4
 
-LABEL mantainer=["Gianfranco Verrocchi","Jose F. Balestrini"] creator="Nikyle Nguyen <NLKNguyen@MSN.com>"
+LABEL mantainer=["Gianfranco A. Verrocchi C.","José F. Hernández B."] creator="Nikyle Nguyen <NLKNguyen@MSN.com>"
 
 ARG REQUIRE="sudo build-base"
 RUN apk update && apk upgrade \

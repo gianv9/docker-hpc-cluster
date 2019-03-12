@@ -1,39 +1,14 @@
 #!/bin/bash
 
+# Load ASCII ART variables
+. ./docker-hpc.asciiart
+
 # Display the greeting message
-printf '
-\e[1;33m     ___           ___         ___
-\e[1;33m    /__/\         /  /\       /  /\
-\e[1;33m    \  \:\       /  /::\     /  /:/     \e[1;32m                  ##\e[1;34m        .
-\e[1;33m     \__\:\     /  /:/\:\   /  /:/      \e[1;32m            ## ## ##\e[1;34m       ==
-\e[1;33m ___ /  /::\   /  /:/~/:/  /  /:/  ___  \e[1;32m         ## ## ## ##\e[1;34m      ===
-\e[1;33m/__/\  /:/\:\ /__/:/ /:/  /__/:/  /  /\ \e[1;34m     /""""""""""""""""\___/ ===
-\e[1;33m\  \:\/:/__\/ \  \:\/:/   \  \:\ /  /:/  \e[0m~~~\e[1;34m{\e[0m~~ ~~~~ ~~~ ~~~~ ~~ ~ \e[1;34m/  ===\e[0m-~
-\e[1;33m \  \::/       \  \::/     \  \:\  /:/  \e[1;34m     \______ o          __/
-\e[1;33m  \  \:\        \  \:\      \  \:\/:/   \e[1;34m       \    \        __/
-\e[1;33m   \  \:\        \  \:\      \  \::/    \e[1;34m        \____\______/
-\e[1;33m    \__\/         \__\/       \__\/'
+printf "$HPC_AA"
 sleep .5
-# printf "\e[5m"
-printf '\e[33m
-     ___           ___           ___           ___           ___
-    /  /\         /__/\         /  /\         /  /\         /__/\
-   /  /:/_       _\_ \:\       /  /::\       /  /::\       |  |::\
-  /  /:/ /\     /__/\ \:\     /  /:/\:\     /  /:/\:\      |  |:|:\
- /  /:/ /::\   _\_ \:\ \:\   /  /:/~/::\   /  /:/~/:/    __|__|:|\:\
-/__/:/ /:/\:\ /__/\ \:\ \:\ /__/:/ /:/\:\ /__/:/ /:/___ /__/::::| \:\
-\  \:\/:/~/:/ \  \:\ \:\/:/ \  \:\/:/__\/ \  \:\/:::::/ \  \:\~~\__\/
- \  \::/ /:/   \  \:\ \::/   \  \::/       \  \::/~~~~   \  \:\
-  \__\/ /:/     \  \:\/:/     \  \:\        \  \:\        \  \:\
-    /__/:/       \  \::/       \  \:\        \  \:\        \  \:\
-    \__\/         \__\/         \__\/         \__\/         \__\/'
+printf "$SWARM_AA"
 sleep .5
-# echo -e "holiwis"
-printf '
-\033[33;7m\e[1;32m
-                              Developed by:                                
-                   Gianfranco Verrocchi & José Hernández                   
-\e[0m'
+printf "$AUTHORS_AA"
 
 sleep 1.8
 
@@ -66,37 +41,19 @@ else
     while [ $# -gt 0 ]; do
         case "$1" in
             -l|--login)
-                #     LOGIN=1
-                # if [[ CHANGED_DIRECTORY == 1 ]];then
-
-                # else
-                #         cd $DEFAULT_PROJECT_LOCATION
-                # fi
-                # ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
-                # exit 0
-                #     break
                 shift
                 if test $# -gt 0; then
-                #     REPLICAS=$1
-                        # exit 0
                         case $1 in
                         alpine_mpich)
-                                # IMAGE_NAME=${alpine_mpich[0]}
                                 cd ${alpine_mpich[1]}
-                                # CHANGED_DIRECTORY=1
-                                # STACK_TAG=${alpine_mpich[2]}
                         ;;
                         ubuntu_openmpi)
-                                # IMAGE_NAME=${ubuntu_openmpi[0]}
                                 cd ${ubuntu_openmpi[1]}
-                                # CHANGED_DIRECTORY=1
-                                # STACK_TAG=${ubuntu_openmpi[2]}
                         ;;
                         *)      
                                 echo -e "\e[91m===> Unkown image $1!"
                                 echo -e "\e[93m===> using default image alpine_mpich instead\e[0m"
                                 break
-                                # exit 0
                         ;;
                         esac
                 else
@@ -105,7 +62,6 @@ else
                         echo -e "\e[93m===> Using default image $IMAGE_NAME instead\e[0m"
                         cd ${alpine_mpich[1]}
                         sleep .5
-                #     REPLICAS=4
                 fi
                 # Make sure the key has the right permissions
                 chmod 0600 ssh/id_rsa*
@@ -129,19 +85,15 @@ else
             -i|--image)
                 shift
                 if test $# -gt 0; then
-                #     REPLICAS=$1
-                        # exit 0
                         case $1 in
                         alpine_mpich)
                                 IMAGE_NAME=${alpine_mpich[0]}
                                 cd ${alpine_mpich[1]}
-                                CHANGED_DIRECTORY=1
                                 STACK_TAG=${alpine_mpich[2]}
                         ;;
                         ubuntu_openmpi)
                                 IMAGE_NAME=${ubuntu_openmpi[0]}
                                 cd ${ubuntu_openmpi[1]}
-                                CHANGED_DIRECTORY=1
                                 STACK_TAG=${ubuntu_openmpi[2]}
                         ;;
                         *)      
@@ -155,21 +107,21 @@ else
                         echo -e "===> No image specified"
                         echo -e "\e[93m===> Using default image $IMAGE_NAME instead\e[0m"
                         sleep .5
-                #     REPLICAS=4
+                        cd $DEFAULT_PROJECT_LOCATION
                 fi
+                # Make sure the key has the right permissions
+                chmod 0600 ssh/id_rsa*
                 shift
                 ;;
             -n|--node-replicas)
                 shift
                 if test $# -gt 0; then
                         $REPLICAS=$1
-                        # exit 0
                 else
                         echo -e "\e[91m===> -wr|--worker-replicas"
                         echo -e "===> No parameter specified"
                         echo -e "\e[93m===> Using default, $REPLICAS replicas instead\e[0m"
                         sleep .5
-                #     REPLICAS=4
                 fi
                 shift
                 ;;
@@ -182,23 +134,17 @@ else
                         echo -e "===> Stack Tag not Specified"
                         echo -e "\e[93m===> Setting the stack tag to docker-hpc\e[0m"
                         $STACK_TAG='docker-hpc'
-                        # echo "no soundfile specified"
-                        # exit 1
                 fi
                 shift
                 ;;
             -d|--down)
                 shift
                 if test $# -gt 0; then
-                # cd $DEFAULT_PROJECT_LOCATION
-                docker stack rm $1 
-                # exit 0
+                docker stack rm $1
                 else
                         echo -e "\e[91m===> No stack name specified\e[0m"
                         echo -e "\e[93m===> Trying the default stack name\e[0m"
                         docker stack rm $STACK_TAG
-                        # STACK_TAG='docker-hpc'
-                        # echo "no soundfile specified"
                 fi
                 # echo -e "\e[93m===> Removing The cluster network\e[0m"
                 # docker-compose -f network-and-nfs.yml down
@@ -207,25 +153,16 @@ else
                 ;;
             --np|--no-push)
                 shift
-                #     LOGIN=1
-                # ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
-                # return 0
-                #     break
                 NO_PUSH=1
                 shift
                 ;;
             --nb|--no-build)
                 shift
-                #     LOGIN=1
-                # ssh -i ssh/id_rsa -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1
-                # return 0
-                #     break
                 NO_BUILD=1
                 shift
                 ;;
             *)
                 shift
-                # echo -e "\e[91m===>-st|--stack-tag"
                 echo -e "\e[91m===> Unknown option $1"
                 echo -e "===> Exiting now\e[0m"
                 shift
@@ -233,12 +170,6 @@ else
                 ;;
         esac
     done
-fi
-
-
-
-if [[ $CHANGED_DIRECTORY != 1 ]];then
-        cd $DEFAULT_PROJECT_LOCATION
 fi
 
 # set the environment variables so docker-compose and docker stack deploy can use them
@@ -260,8 +191,6 @@ export IMAGE_NAME REPLICAS STACK_TAG
 # export NODE_IP=172.17.0.1
 # docker-compose -f launch-registry.yml up -d
 
-
-
 if [[ $NO_BUILD != 1 ]];then
         echo -e "\n\033[33;7m\e[1;32m===> Building image...\e[0m"
         docker-compose -f build-and-upload.yml build
@@ -272,23 +201,12 @@ if [[ $NO_PUSH != 1 ]];then
         docker-compose -f build-and-upload.yml push
 fi
 
-echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
+# echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
 
 # docker-compose -f network-and-nfs.yml up -d
 # docker stack deploy --compose-file network-and-nfs.yml network_and_nfs
 
-printf '
- --------------------------------------------------------------------
-|                 ##        .                      ##        .       |
-|           ## ## ##       ==                ## ## ##       ==       |
-|        ## ## ## ##      ===             ## ## ## ##      ===       |
-|    /""""""""""""""""\___/ ===       /""""""""""""""""\___/ ===     |
-|~~~{~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===-~~~{~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===-~~|
-|    \______ o          __/           \______ o          __/         |
-|      \    \        __/                \    \        __/            |
-|       \____\______/                    \____\______/               |
-|        M A S T E R                      W O R K E R x ' && printf "$REPLICAS\t     |\n\
- --------------------------------------------------------------------\n"
+printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 

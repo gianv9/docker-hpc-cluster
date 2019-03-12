@@ -3,7 +3,7 @@
 
 FROM ubuntu:18.04
 
-LABEL mantainer=["Gianfranco Verrocchi","Jose F. Balestrini"] creator="Ole Weidner <ole.weidner@ed.ac.uk>"
+LABEL mantainer=["Gianfranco A. Verrocchi C.","José F. Hernández B."] creator="Ole Weidner <ole.weidner@ed.ac.uk>"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && \
