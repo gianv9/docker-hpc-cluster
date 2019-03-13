@@ -15,7 +15,7 @@ services:
 networks:
   default:
     external:
-      name: alpine-mpich_default
+      name: ${STACK_TAG}_default
     # deploy:
     #   placement:
     #     constraints: [node.role == manager]
