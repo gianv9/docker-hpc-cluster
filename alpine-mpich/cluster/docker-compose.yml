@@ -28,7 +28,7 @@ services:
 
   nfs_server:
     image: itsthenetwork/nfs-server-alpine:latest
-    privileged: true
+    # privileged: true
     volumes:
       - "./programs:/nfsshare"
     environment:

@@ -39,6 +39,14 @@ services:
     # networks: 
     #   net:
 
+  nfs_server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    # privileged: true
+    volumes:
+      - "./programs:/nfsshare"
+    environment:
+      SHARED_DIRECTORY: /nfsshare
+
 # networks:
 #   default:
 #     external:

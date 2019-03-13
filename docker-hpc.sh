@@ -91,11 +91,13 @@ else
                                 IMAGE_NAME=${alpine_mpich[0]}
                                 cd ${alpine_mpich[1]}
                                 STACK_TAG=${alpine_mpich[2]}
+                                CHANGED_DIRECTORY=1
                         ;;
                         ubuntu_openmpi)
                                 IMAGE_NAME=${ubuntu_openmpi[0]}
                                 cd ${ubuntu_openmpi[1]}
                                 STACK_TAG=${ubuntu_openmpi[2]}
+                                CHANGED_DIRECTORY=1
                         ;;
                         *)      
                                 echo -e "\e[91m===> Unkown image $1!"
@@ -171,6 +173,10 @@ else
                 ;;
         esac
     done
+fi
+
+if [[ CHANGED_DIRECTORY != 1 ]];then
+        cd $DEFAULT_PROJECT_LOCATION
 fi
 
 # set the environment variables so docker-compose and docker stack deploy can use them
