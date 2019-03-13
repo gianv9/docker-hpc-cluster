@@ -149,8 +149,23 @@ else
                         echo -e "\e[93m===> Trying the default stack name\e[0m"
                         docker stack rm $STACK_TAG
                 fi
-                # echo -e "\e[93m===> Removing The cluster network\e[0m"
-                # docker-compose -f network-and-nfs.yml down
+
+                echo -e "\e[93m===> Removing The cluster network and nfs server\e[0m"
+                case $1 in
+                        alpine-mpich)
+                                cd ${alpine_mpich[1]}
+                        ;;
+                        ubuntu-openmpi)
+                                cd ${ubuntu_openmpi[1]}
+                        ;;
+                        *)      
+                                echo -e "\e[91m===> Unkown image $1!"
+                                echo -e "\e[93m===> using default image alpine-mpich instead\e[0m"
+                                cd $DEFAULT_PROJECT_LOCATION
+                                break
+                        ;;
+                esac
+                docker-compose -f nfs-server.yml down
                 shift
                 exit 0
                 ;;
@@ -213,11 +228,11 @@ fi
 
 printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
+echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
+docker-compose -f nfs-server.yml up -d
+
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG
-
-echo -e "\n\033[33;7m\e[1;32m===> Attaching the nfs server container to the cluster network...\e[0m"
-docker-compose -f nfs-server.yml up -d
 
 echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
