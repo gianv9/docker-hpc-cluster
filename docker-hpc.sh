@@ -228,8 +228,8 @@ fi
 
 printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
-echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
-docker-compose -f nfs-server.yml up -d
+# echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
+# docker-compose -f nfs-server.yml up -d
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG

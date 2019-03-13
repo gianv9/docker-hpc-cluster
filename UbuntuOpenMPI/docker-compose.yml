@@ -1,6 +1,17 @@
 version: '3.3'
 
 services:
+
+  nfs_server:
+    image: itsthenetwork/nfs-server-alpine:latest
+    privileged: true
+    volumes:
+      - "./programs:/nfsshare"
+    environment:
+      SHARED_DIRECTORY: /nfsshare
+    ports:
+      - "2049:2049"
+
   master:
     # image: gianv9/docker-hpc:ubuntu-openmpi-latest
     image: ${IMAGE_NAME}
@@ -39,10 +50,10 @@ services:
     # networks: 
     #   net:
 
-networks:
-  default:
-    external:
-      name: ubuntuopenmpi_net
+# networks:
+#   default:
+#     external:
+#       name: ubuntuopenmpi_net
 
 # networks:
 #   # net:
