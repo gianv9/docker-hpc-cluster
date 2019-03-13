@@ -19,11 +19,11 @@ if [ -f ./docker-hpc.conf ];then
 else
         echo -e "\e[93m===> File docker-hpc.conf not found!"
         echo -e "===> Setting default parameters...\e[0m"
-        alpine-mpich=(gianv9/docker-hpc:alpine-mpich-latest ./alpine-mpich/cluster alpine-mpich)
-        ubuntu-openmpi=(gianv9/docker-hpc:ubuntu-openmpi-latest ./UbuntuOpenMPI ubuntu-openmpi)
-        DEFAULT_PROJECT_LOCATION=${alpine-mpich[1]}
-        IMAGE_NAME=${alpine-mpich[0]}
-        STACK_TAG=${alpine-mpich[2]}
+        alpine_mpich=(gianv9/docker-hpc:alpine-mpich-latest ./alpine-mpich/cluster alpine-mpich)
+        ubuntu_openmpi=(gianv9/docker-hpc:ubuntu-openmpi-latest ./UbuntuOpenMPI ubuntu-openmpi)
+        DEFAULT_PROJECT_LOCATION=${alpine_mpich[1]}
+        IMAGE_NAME=${alpine_mpich[0]}
+        STACK_TAG=${alpine_mpich[2]}
         REPLICAS=4
         CLUSTER_LOGIN_COMMAND='ssh -q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1'
         # LOGIN=0
@@ -46,10 +46,10 @@ else
                 if test $# -gt 0; then
                         case $1 in
                         alpine-mpich)
-                                cd ${alpine-mpich[1]}
+                                cd ${alpine_mpich[1]}
                         ;;
                         ubuntu-openmpi)
-                                cd ${ubuntu-openmpi[1]}
+                                cd ${ubuntu_openmpi[1]}
                         ;;
                         *)      
                                 echo -e "\e[91m===> Unkown image $1!"
@@ -61,7 +61,7 @@ else
                         echo -e "\e[91m===> -l|--login"
                         echo -e "===> No image specified"
                         echo -e "\e[93m===> Using default image $IMAGE_NAME instead\e[0m"
-                        cd ${alpine-mpich[1]}
+                        cd ${alpine_mpich[1]}
                         sleep .5
                 fi
                 # Make sure the key has the right permissions
@@ -88,15 +88,15 @@ else
                 if test $# -gt 0; then
                         case $1 in
                         alpine-mpich)
-                                IMAGE_NAME=${alpine-mpich[0]}
-                                cd ${alpine-mpich[1]}
-                                STACK_TAG=${alpine-mpich[2]}
+                                IMAGE_NAME=${alpine_mpich[0]}
+                                cd ${alpine_mpich[1]}
+                                STACK_TAG=${alpine_mpich[2]}
                                 CHANGED_DIRECTORY=1
                         ;;
                         ubuntu-openmpi)
-                                IMAGE_NAME=${ubuntu-openmpi[0]}
-                                cd ${ubuntu-openmpi[1]}
-                                STACK_TAG=${ubuntu-openmpi[2]}
+                                IMAGE_NAME=${ubuntu_openmpi[0]}
+                                cd ${ubuntu_openmpi[1]}
+                                STACK_TAG=${ubuntu_openmpi[2]}
                                 CHANGED_DIRECTORY=1
                         ;;
                         *)      
