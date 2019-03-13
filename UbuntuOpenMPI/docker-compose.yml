@@ -39,10 +39,10 @@ services:
     # networks: 
     #   net:
 
-# networks:
-#   default:
-#     external:
-#       name: ubuntuopenmpi_net
+networks:
+  default:
+    external:
+      name: ubuntuopenmpi_net
 
 # networks:
 #   # net:
