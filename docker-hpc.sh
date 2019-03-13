@@ -165,7 +165,8 @@ else
                                 break
                         ;;
                 esac
-                docker-compose -f nfs-server.yml down
+                CHANGED_DIRECTORY=1
+                # docker-compose -f nfs-server.yml down
                 shift
                 exit 0
                 ;;
@@ -202,8 +203,12 @@ export IMAGE_NAME REPLICAS STACK_TAG
 
 # masterNodeIP=$(docker node inspect --format '{{.Status.Addr}}' `hostname`)
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
-# masterNodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
 
+NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
+echo -e "\n\033[33;7m\e[1;32m===> Tagging node ($NodeID) as 'nfs_folder=true' before deployment\e[0m"
+docker node update --label-add nfs_folder=true $NodeID
+echo -e "\n\033[33;7m\e[1;32m===> Node tagged:\e[0m"
+docker node inspect $NodeID -f '{{ .Spec.Labels }}'
 # echo "master IP: $masterNodeIP"
 # echo "master ID: $masterNodeID"
 

@@ -4,13 +4,17 @@ services:
 
   nfs_server:
     image: itsthenetwork/nfs-server-alpine:latest
-    privileged: true
+    # privileged: true
     volumes:
       - "./programs:/nfsshare"
     environment:
       SHARED_DIRECTORY: /nfsshare
     ports:
       - "2049:2049"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.nfs_folder == true
 
   master:
     # image: gianv9/docker-hpc:ubuntu-openmpi-latest
