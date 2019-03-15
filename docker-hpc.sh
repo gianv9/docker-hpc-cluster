@@ -166,7 +166,10 @@ else
                         ;;
                 esac
                 CHANGED_DIRECTORY=1
-                # docker-compose -f nfs-server.yml down
+                docker-compose -f nfs-server.yml down
+                NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
+                echo -e "\n\033[33;7m\e[1;32m===> Removing node ($NodeID) tag 'script_bearer=true'\e[0m"
+                docker node update --label-rm script_bearer=true $NodeID
                 shift
                 exit 0
                 ;;
@@ -204,11 +207,14 @@ export IMAGE_NAME REPLICAS STACK_TAG
 # masterNodeIP=$(docker node inspect --format '{{.Status.Addr}}' `hostname`)
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
+
 NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
-echo -e "\n\033[33;7m\e[1;32m===> Tagging node ($NodeID) as 'nfs_folder=true' before deployment\e[0m"
-docker node update --label-add nfs_folder=true $NodeID
+echo -e "\n\033[33;7m\e[1;32m===> Tagging node ($NodeID) as 'script_bearer=true' before deployment\e[0m"
+docker node update --label-add script_bearer=true $NodeID
 echo -e "\n\033[33;7m\e[1;32m===> Node tagged:\e[0m"
 docker node inspect $NodeID -f '{{ .Spec.Labels }}'
+
+
 # echo "master IP: $masterNodeIP"
 # echo "master ID: $masterNodeID"
 
@@ -233,8 +239,8 @@ fi
 
 printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
-# echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
-# docker-compose -f nfs-server.yml up -d
+echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
+docker-compose -f nfs-server.yml up -d
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG
@@ -242,6 +248,6 @@ docker stack deploy --compose-file docker-compose.yml $STACK_TAG
 echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
-./wait-for-it.sh -t 120 172.17.0.1:2222 -- \
+./wait-for-it.sh -t 0 172.17.0.1:2222 -- \
         echo -e "\n\033[33;7m\e[1;32m===>Cluster Master Node is Ready\n\e[0m" 2> /dev/null
 eval $CLUSTER_LOGIN_COMMAND

@@ -8,7 +8,7 @@ services:
     volumes:
       - "./programs:/nfsshare"
     environment:
-      SHARED_DIRECTORY: /nfsshare
+      - SHARED_DIRECTORY=/nfsshare
     ports:
       - "2049:2049"
 

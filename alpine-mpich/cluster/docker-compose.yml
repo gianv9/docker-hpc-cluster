@@ -26,10 +26,10 @@ services:
   #   networks:
   # #     - cluster_net
 
-# networks:
-#   default:
-#     external:
-#       name: cluster_net
+networks:
+  default:
+    external:
+      name: cluster_net
 
 # volumes:
 #   nfs_share:

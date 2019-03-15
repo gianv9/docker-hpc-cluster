@@ -2,19 +2,19 @@ version: '3.3'
 
 services:
 
-  nfs_server:
-    image: itsthenetwork/nfs-server-alpine:latest
-    # privileged: true
-    volumes:
-      - "./programs:/nfsshare"
-    environment:
-      SHARED_DIRECTORY: /nfsshare
-    ports:
-      - "2049:2049"
-    deploy:
-      placement:
-        constraints:
-          - node.labels.nfs_folder == true
+  # nfs_server:
+  #   image: itsthenetwork/nfs-server-alpine:latest
+  #   # privileged: true
+  #   volumes:
+  #     - "./programs:/nfsshare"
+  #   environment:
+  #     SHARED_DIRECTORY: /nfsshare
+  #   ports:
+  #     - "2049:2049"
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.labels.nfs_folder == true
 
   master:
     # image: gianv9/docker-hpc:ubuntu-openmpi-latest
@@ -30,6 +30,10 @@ services:
       "mpi_worker_service_name=worker"
       # "openmpi_hostfile=/etc/openmpi/openmpi-default-hostfile"
       ]
+    deploy:
+      placement:
+        constraints:
+          - node.labels.script_bearer == true
     # entrypoint: ["bash -c auto_update_hosts role=master mpi_master_service_name=master mpi_worker_service_name=worker openmpi_hostfile='/etc/openmpi/openmpi-default-hostfile' && /usr/sbin/sshd"]
     # entrypoint: ["/usr/sbin/sshd", "-D"]
     # command:
@@ -54,10 +58,10 @@ services:
     # networks: 
     #   net:
 
-# networks:
-#   default:
-#     external:
-#       name: ubuntuopenmpi_net
+networks:
+  default:
+    external:
+      name: ubuntuopenmpi_net
 
 # networks:
 #   # net:
