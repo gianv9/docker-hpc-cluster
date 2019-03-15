@@ -162,7 +162,7 @@ else
                                 echo -e "\e[91m===> Unkown image $1!"
                                 echo -e "\e[93m===> using default image alpine-mpich instead\e[0m"
                                 cd $DEFAULT_PROJECT_LOCATION
-                                break
+                                # break
                         ;;
                 esac
                 CHANGED_DIRECTORY=1
