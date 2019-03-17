@@ -172,7 +172,7 @@ else
                         ;;
                 esac
                 CHANGED_DIRECTORY=1
-                docker-compose -f nfs-server.yml down
+                # docker-compose -f nfs-server.yml down
                 NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
                 echo -e "\n\033[33;7m\e[1;32m===> Removing node ($NodeID) tag 'script_bearer=true'\e[0m"
                 docker node update --label-rm script_bearer $NodeID
@@ -248,10 +248,13 @@ fi
 
 printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
-echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
-docker-compose -f nfs-server.yml up -d
+# echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
+# docker-compose -f nfs-server.yml up -d
 
 # sudo mount -v 192.168.1.62:/ /opt/nfs/volumes/debug
+
+echo -e "\n\033[33;7m\e[1;32m===> Removing previous cluster network...\e[0m"
+docker network rm "$STACK_TAG"_default
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG

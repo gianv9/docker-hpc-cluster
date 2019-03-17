@@ -29,6 +29,12 @@ services:
     #       nocopy: true
     # networks:
     #   - cluster_net
+    deploy:
+      placement:
+        constraints:
+          - node.labels.script_bearer == true
+    volumes:
+      - "./programs/:/project/shared"
 
   worker:
     # image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
@@ -39,11 +45,26 @@ services:
     entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
   #   networks:
   # #     - cluster_net
+    deploy:
+      replicas: ${REPLICAS}
+      placement:
+        constraints:
+          - node.labels.script_bearer != true
+    volumes:
+      - "sshfs:/project/shared"
 
-networks:
-  default:
-    external:
-      name: cluster_net
+volumes:
+  sshfs:
+    driver: vieux/sshfs:latest
+    driver_opts:
+      sshcmd: "${SCRIPT_BEARER_IP}:${CURRENT_DIR}/${SHARED_FOLDER}"
+      # password: "${PASSWORD}"
+      allow_other: ""
+
+# networks:
+#   default:
+#     external:
+#       name: cluster_net
 
 # volumes:
 #   nfs_share:
