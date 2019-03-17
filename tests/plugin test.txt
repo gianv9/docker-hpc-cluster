@@ -1,7 +1,41 @@
-Test 1
+Local PlayWithDocker
+
+---> Test 1 WORKS
 
 docker plugin install --grant-all-permissions vieux/sshfs sshkey.source=/root/.ssh && \
 docker volume create -d vieux/sshfs -o sshcmd=192.168.0.11:/root/shared sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+docker rm --force `docker ps -aq` && \
+docker volume rm sshvolume && \
+docker plugin disable vieux/sshfs && \
+docker plugin rm vieux/sshfs
+
+
+Local gianfranco
+
+--> Test 1 DOESNT WORK
+
+docker plugin install --grant-all-permissions vieux/sshfs sshkey.source=/home/gianfranco/.ssh && \
+docker volume create -d vieux/sshfs -o sshcmd=tobashi:/home/gianfranco/Documents sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+docker rm --force `docker ps -aq` && \
+docker volume rm sshvolume && \
+docker plugin disable vieux/sshfs && \
+docker plugin rm vieux/sshfs
+
+
+--> Test 2 WORKS
+
+docker plugin install vieux/sshfs && \
+docker volume create -d vieux/sshfs -o sshcmd=gianfranco@tobashi:/home/gianfranco/Documents -o password=D0k3rM4st3r@  sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+or 
+
+docker plugin install vieux/sshfs && \
+docker volume create -d vieux/sshfs -o sshcmd=gianfranco@192.168.1.62:/home/gianfranco/Documents -o password=D0k3rM4st3r@  sshvolume && \
 docker run -it -v sshvolume:/brilliant busybox ls /brilliant
 
 docker rm --force `docker ps -aq` && \
