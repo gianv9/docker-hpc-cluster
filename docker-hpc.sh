@@ -12,6 +12,12 @@ printf "$AUTHORS_AA"
 
 sleep 1.8
 
+NodeRole=$(docker node inspect --format '{{.Spec.Role}}' `hostname`)
+
+if [[ $NodeRole != 'manager' ]];then
+        echo -e "\e[91m===> This node must be a manager to use this script!..."
+fi
+
 # Include config variables if the file exists
 if [ -f ./docker-hpc.conf ];then
     echo -e "\e[93m===> Importing Variables from docker-hpc.conf \e[0m"
@@ -169,7 +175,7 @@ else
                 docker-compose -f nfs-server.yml down
                 NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
                 echo -e "\n\033[33;7m\e[1;32m===> Removing node ($NodeID) tag 'script_bearer=true'\e[0m"
-                docker node update --label-rm script_bearer=true $NodeID
+                docker node update --label-rm script_bearer $NodeID
                 shift
                 exit 0
                 ;;
@@ -198,13 +204,16 @@ if [[ CHANGED_DIRECTORY != 1 ]];then
         cd $DEFAULT_PROJECT_LOCATION
 fi
 
-# set the environment variables so docker-compose and docker stack deploy can use them
-# export REGISTRY_ADDR=$masterNodeIP
-echo -e "\e[93m===> Environment variables:"
-echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $(pwd)\e[0m"
-export IMAGE_NAME REPLICAS STACK_TAG
+SCRIPT_BEARER_IP=$(docker node inspect --format '{{.Status.Addr}}' `hostname`)
+CURRENT_DIR=$(pwd)
+SHARED_FOLDER=programs
 
-# masterNodeIP=$(docker node inspect --format '{{.Status.Addr}}' `hostname`)
+# set the environment variables so docker-compose and docker stack deploy can use them
+# export REGISTRY_ADDR=$SCRIPT_BEARER_IP
+echo -e "\e[93m===> Environment variables:"
+echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\e[0m"
+export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP SHARED_FOLDER
+
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
 
@@ -241,6 +250,8 @@ printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
 echo -e "\n\033[33;7m\e[1;32m===> Creating the network and the nfs server container...\e[0m"
 docker-compose -f nfs-server.yml up -d
+
+# sudo mount -v 192.168.1.62:/ /opt/nfs/volumes/debug
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG

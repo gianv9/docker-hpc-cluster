@@ -1,0 +1,10 @@
+Test 1
+
+docker plugin install --grant-all-permissions vieux/sshfs sshkey.source=/root/.ssh && \
+docker volume create -d vieux/sshfs -o sshcmd=192.168.0.11:/root/shared sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+docker rm --force `docker ps -aq` && \
+docker volume rm sshvolume && \
+docker plugin disable vieux/sshfs && \
+docker plugin rm vieux/sshfs

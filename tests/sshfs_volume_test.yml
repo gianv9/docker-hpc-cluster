@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+
+    busy_box:
+        image: busybox
+        entrypoint: ["ls", "/data"]
+        volumes:
+          - "sshfs:/data"
+
+volumes:
+  sshfs:
+    driver: vieux/sshfs:latest
+    driver_opts:
+      sshcmd: "192.168.0.11:/root/shared"
+      # password: "${PASSWORD}"
+      allow_other: ""

@@ -1,5 +1,13 @@
 version: '3.3'
 
+# volumes:
+#   vol_debug:
+#     driver: local
+#     driver_opts:
+#       type: "nfs"
+#       o: addr=192.168.1.115,nolock,soft,rw
+#       device: ":/opt/nfs/volumes/debug"
+
 services:
   # registry:
   #   image: registry
@@ -13,6 +21,12 @@ services:
     entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     ports:
       - "2222:22"
+    # volumes:
+    #   - type: volume
+    #     source: vol_debug
+    #     target: /data
+    #     volume:
+    #       nocopy: true
     # networks:
     #   - cluster_net
 

@@ -34,6 +34,8 @@ services:
       placement:
         constraints:
           - node.labels.script_bearer == true
+    volumes:
+      - "./programs/:/home/mpiuser/shared"
     # entrypoint: ["bash -c auto_update_hosts role=master mpi_master_service_name=master mpi_worker_service_name=worker openmpi_hostfile='/etc/openmpi/openmpi-default-hostfile' && /usr/sbin/sshd"]
     # entrypoint: ["/usr/sbin/sshd", "-D"]
     # command:
@@ -55,13 +57,24 @@ services:
     # entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     deploy:
       replicas: ${REPLICAS}
+    volumes:
+      - "sshfs:/home/mpiuser/shared"
     # networks: 
     #   net:
 
-networks:
-  default:
-    external:
-      name: ubuntuopenmpi_net
+# networks:
+#   default:
+#     external:
+#       name: ubuntuopenmpi_net
+
+volumes:
+  sshfs:
+    driver: vieux/sshfs:latest
+    driver_opts:
+      sshcmd: "{SCRIPT_BEARER_IP}:{CURRENT_DIR}/{SHARED_FOLDER}"
+      # password: "${PASSWORD}"
+      allow_other: ""
+
 
 # networks:
 #   # net:
