@@ -44,11 +44,8 @@ RUN chmod -R 600 /home/mpiuser/.ssh/* && \
     chown -R mpiuser:mpiuser /home/mpiuser/.ssh
 
 EXPOSE 22
-# CMD ["/usr/sbin/sshd", "-D"]
 ADD find_workers /usr/local/bin/find_workers
 RUN chmod +x /usr/local/bin/find_workers
-# ADD mpi_bootstrap /usr/local/bin/mpi_bootstrap
-# RUN chmod +x /usr/local/bin/mpi_bootstrap
 ADD auto_update_hosts /usr/local/bin/auto_update_hosts
 RUN chmod +x /usr/local/bin/auto_update_hosts
 
@@ -66,12 +63,9 @@ COPY ./programs /home/mpiuser
 RUN chmod +x /home/mpiuser/*.py
 
 #---------------------------------------------------------------
-#Add BTL TCP MCA Params to OMPI and compile Hello World
+#Compiling Hello World and MPI-Splitter
 #---------------------------------------------------------------
 
-#RUN echo 'btl_tcp_if_exclude = lo,eth1,eth2' >> /etc/openmpi/openmpi-mca-params.conf
-#RUN echo 'btl=^openib' >> /etc/openmpi/openmpi-mca-params.conf
-#RUN echo 'oob_tcp_if_exclude = lo,172.18.0.0/24' >> /etc/openmpi/openmpi-mca-params.conf
 RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
 RUN chown -R mpiuser:mpiuser /home/mpiuser
 RUN echo 'Why, Hello there!'
