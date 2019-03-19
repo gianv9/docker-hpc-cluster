@@ -16,7 +16,12 @@ NodeRole=$(docker node inspect --format '{{.Spec.Role}}' `hostname`)
 
 if [[ $NodeRole != 'manager' ]];then
         echo -e "\e[91m===> This node must be a manager to use this script!..."
+        exit 1
 fi
+
+SHARED_FOLDER=programs
+
+
 
 # Include config variables if the file exists
 if [ -f ./docker-hpc.conf ];then
@@ -206,7 +211,24 @@ fi
 
 SCRIPT_BEARER_IP=$(docker node inspect --format '{{.Status.Addr}}' `hostname`)
 CURRENT_DIR=$(pwd)
-SHARED_FOLDER=programs
+
+# ok...the node is a manager...
+# but how many nodes are there?
+SWARM_SIZE=$(docker node ls -q|wc -l)
+if [[ $SWARM_SIZE == 1 ]]; then
+# if the swarm size is one, that means there is only one docker runtime to allocate the resources
+# so it doesn't make any sense to sshfs to itself
+# then we tell the workers to mount the same local volume as the master
+# a local folder
+# Option one modifies the interfaces...we won't use this for now...
+# # ... docker-compose.yml
+#         docker-compose -f docker-compose.yml up -d
+        SHARED_FOLDER=./$SHARED_FOLDER
+else
+# otherwise we tell the workers to use the master node shared folder through the volume
+# ... docker-swarm-stack.yml
+        SHARED_FOLDER=sshfs
+fi
 
 # set the environment variables so docker-compose and docker stack deploy can use them
 # export REGISTRY_ADDR=$SCRIPT_BEARER_IP
@@ -253,11 +275,15 @@ printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
 # sudo mount -v 192.168.1.62:/ /opt/nfs/volumes/debug
 
-echo -e "\n\033[33;7m\e[1;32m===> Removing previous cluster network...\e[0m"
-docker network rm "$STACK_TAG"_default
+echo -e "\n\033[33;7m\e[1;32m===> Waiting for previous cluster networks to die...\e[0m"
+# docker network rm "$STACK_TAG"_default
+while [[ $(docker network ls --format {{.Name}} -f name=ubuntu-openmpi_default) != "" ]]; do
+printf "."
+sleep 1
+done
 
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
-docker stack deploy --compose-file docker-compose.yml $STACK_TAG
+docker stack deploy --compose-file docker-compose-swarm-stack.yml $STACK_TAG
 
 echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
