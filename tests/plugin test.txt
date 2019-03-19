@@ -103,6 +103,20 @@ docker plugin install vieux/sshfs && \
 docker volume create -d vieux/sshfs -o sshcmd=gianfranco@192.168.1.62:/home/gianfranco/Documents -o password=yourPassword  sshvolume && \
 docker run -it -v sshvolume:/brilliant busybox ls /brilliant
 
+--> Test 2 JFHB UbuntuVM WORKS
+
+docker plugin install vieux/sshfs && \
+docker volume create -d vieux/sshfs -o sshcmd=kiko@link-vm:/home/kiko/Downloads -o password=-- sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+or
+
+docker plugin install vieux/sshfs && \
+docker volume create -d vieux/sshfs -o sshcmd=kiko@192.168.0.36:/home/kiko/Downloads -o password=-- sshvolume && \
+docker run -it -v sshvolume:/brilliant busybox ls /brilliant
+
+--> Remove plugin and clean install after testing
+
 docker rm --force `docker ps -aq` && \
 docker volume rm sshvolume && \
 docker plugin disable vieux/sshfs && \

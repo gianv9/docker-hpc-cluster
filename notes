@@ -1,4 +1,4 @@
-ideas 26/02/19:
+Ideas 26/02/19:
 
 Now that we've found one way to set the shared filesystem on the nodes 
 (see my dockerhub starred repos).
@@ -10,33 +10,52 @@ a swarm cluster.
 One main advantage of using the nfs share image found at dockerhub is that is can be deployed
 as a service, which follows the microservice architecture docker promotes and supports.
 
-also, we must define a standarized way to launch the clusters.
-The best way i can think of is to define a compose file that launches the alpine cluster.
+Also, we must define a standarized way to launch the clusters.
+The best way I (Gianfranco) can think of is to define a compose file that launches the alpine cluster.
 but that is going to bring some challenges:
 - how to parametrize the names, ports, repos that are used to create/launch the image? 
 - how is the solution going to scale up or down properly by using docker stacks?
 
-next steps,
+Next steps:
 
-now that we now that the shared filesystem problem is already solved, 
+Now that we know that the shared filesystem problem is already solved, 
 we must standarize the way the projects are launched. After that, the previously mentioned
 filesystem share will be done.
 
 
-01/03/18:
+01/03/2019:
 
-It is important that lanching stript uses the user's account (just like on the alpine projetc),
+It is important that the launching script uses the defined user's account (just like on the alpine project),
 So that anyone is able to push and pull the images to and from their own account's repo.
 Otherwise they aren't going to be able to launch the cluster.
 
 Note: we must remember to specify the thought process we went through when starting this project.
 For example, we had the idea (automatically spawn a cluster by using docker containers), but as 
-we searched for similar solutions we came accross two projects (nguyen's and filgueira's) on which
+we searched for similar solutions we came accross two projects (Nguyen's and Filgueira's) on which
 we focused on. So instead of doing the same thing they did again (reinventing the wheel), we decided
 to build on top of those projects and improve them even more, integrating them into a single, very
-simple to use, and multi envirornment hpc cluster deployment project.
+simple to use, and multi envirornment HPC cluster deployment project.
 
-Then we also found an eyeopening article about hpc and mpi (here we put the reference to the canadian
-guy's article), that dives into the history and future of mpi as a thechlonogy on the hpc world.
-which in turn lead us to further research into the currently used hpc programming solution such as
-earlang and julia.
+Then we also found an eyeopening article about HPC and MPI (here we put the reference to the canadian
+guy's article), that dives into the history and future of MPI as a technology on the HPC world.
+which in turn lead us to further research into the currently used HPC programming solution such as
+Erlang and Julia.
+
+19/03/2019:
+
+We have overcome most of the hurdles in the road of automation for the cluster launch script.
+
+Finished:
+
+	- The cluster launches in a standarized way both images:
+		+ Alpine with MPICH
+		+ Ubuntu with OpenMPI
+	- The Ubuntu image needed reconfiguring and upgrading the OpenMPI packages and the base image
+	- The NFS server was replaced with an SSHFS docker volume, which was compatible with Docker Swarm
+      because the NFS server required parameters for the master node container which are disabled by
+      default in Swarm implementations.
+
+Next steps:
+
+	- Installation of SLURM resource manager in both images, in order to make it easier to launch 
+      batch jobs in the cluster. 
