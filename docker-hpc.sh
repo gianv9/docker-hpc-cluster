@@ -259,9 +259,9 @@ docker network rm "$STACK_TAG"_default
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose.yml $STACK_TAG
 
-echo -e "\n\033[33;7m\e[1;32m===>Waiting for The master to spawn..."
+echo -e "\n\033[33;7m\e[1;32m===> Waiting for the master node to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
 ./wait-for-it.sh -t 0 172.17.0.1:2222 -- \
-        echo -e "\n\033[33;7m\e[1;32m===>Cluster Master Node is Ready\n\e[0m" 2> /dev/null
+        echo -e "\n\033[33;7m\e[1;32m===> Cluster Master Node is Ready\n\e[0m" 2> /dev/null
 eval $CLUSTER_LOGIN_COMMAND
