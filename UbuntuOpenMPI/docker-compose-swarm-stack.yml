@@ -35,7 +35,7 @@ services:
         constraints:
           - node.labels.script_bearer == true
     volumes:
-      - "./${SHARED_FOLDER}:/home/mpiuser/shared"
+      - "${MASTER_SHARED_FOLDER}:/home/mpiuser/shared"
     # entrypoint: ["bash -c auto_update_hosts role=master mpi_master_service_name=master mpi_worker_service_name=worker openmpi_hostfile='/etc/openmpi/openmpi-default-hostfile' && /usr/sbin/sshd"]
     # entrypoint: ["/usr/sbin/sshd", "-D"]
     # command:
@@ -63,7 +63,7 @@ services:
     volumes:
       # when the swarm has more than one node, ${SHARED_FOLDER}=sshsf
       # so the vieux plugin volume is used
-      - "${SHARED_FOLDER}:/home/mpiuser/shared"
+      - "${WORKER_SHARED_FOLDER}:/home/mpiuser/shared"
     # networks: 
     #   net:
 

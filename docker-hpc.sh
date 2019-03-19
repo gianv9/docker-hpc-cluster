@@ -19,7 +19,6 @@ if [[ $NodeRole != 'manager' ]];then
         exit 1
 fi
 
-SHARED_FOLDER=programs
 
 
 
@@ -36,6 +35,7 @@ else
         IMAGE_NAME=${alpine_mpich[0]}
         STACK_TAG=${alpine_mpich[2]}
         REPLICAS=4
+        SHARED_FOLDER=./programs
         CLUSTER_LOGIN_COMMAND='ssh -q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1'
         # LOGIN=0
 fi
@@ -214,27 +214,29 @@ CURRENT_DIR=$(pwd)
 
 # ok...the node is a manager...
 # but how many nodes are there?
-SWARM_SIZE=$(docker node ls -q|wc -l)
+SWARM_SIZE=$(docker node ls --format "{{.Status}}"|grep -c Ready)
+MASTER_SHARED_FOLDER=$SHARED_FOLDER
 if [[ $SWARM_SIZE == 1 ]]; then
 # if the swarm size is one, that means there is only one docker runtime to allocate the resources
 # so it doesn't make any sense to sshfs to itself
 # then we tell the workers to mount the same local volume as the master
 # a local folder
-# Option one modifies the interfaces...we won't use this for now...
+        WORKER_SHARED_FOLDER=$MASTER_SHARED_FOLDER
+
+# docker-compose modifies the interfaces...we won't use this for now...
 # # ... docker-compose.yml
 #         docker-compose -f docker-compose.yml up -d
-        SHARED_FOLDER=./$SHARED_FOLDER
 else
 # otherwise we tell the workers to use the master node shared folder through the volume
 # ... docker-swarm-stack.yml
-        SHARED_FOLDER=sshfs
+        WORKER_SHARED_FOLDER=sshfs
 fi
 
 # set the environment variables so docker-compose and docker stack deploy can use them
 # export REGISTRY_ADDR=$SCRIPT_BEARER_IP
 echo -e "\e[93m===> Environment variables:"
 echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\e[0m"
-export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP SHARED_FOLDER
+export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_SHARED_FOLDER
 
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
