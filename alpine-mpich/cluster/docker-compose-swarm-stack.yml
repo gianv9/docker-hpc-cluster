@@ -18,7 +18,12 @@ services:
     # image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
     image: ${IMAGE_NAME}
     user: root
-    entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
+    entrypoint: [
+      "mpi_bootstrap", 
+      "role=master", 
+      "mpi_master_service_name=master", 
+      "mpi_worker_service_name=worker"
+      ]
     ports:
       - "2222:22"
     # volumes:
@@ -34,7 +39,7 @@ services:
         constraints:
           - node.labels.script_bearer == true
     volumes:
-      - "./programs/:/project/shared"
+      - "${MASTER_SHARED_FOLDER}:/project/shared"
 
   worker:
     # image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
@@ -47,11 +52,13 @@ services:
   # #     - cluster_net
     deploy:
       replicas: ${REPLICAS}
-      placement:
-        constraints:
-          - node.labels.script_bearer != true
+      # placement:
+      #   constraints:
+      #     - node.labels.script_bearer != true
     volumes:
-      - "sshfs:/project/shared"
+      # when the swarm has more than one node, ${SHARED_FOLDER}=sshsf
+      # so the vieux plugin volume is used
+      - "${WORKER_SHARED_FOLDER}:/project/shared"
 
 volumes:
   sshfs:

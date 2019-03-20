@@ -279,7 +279,8 @@ printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 
 echo -e "\n\033[33;7m\e[1;32m===> Waiting for previous cluster networks to die...\e[0m"
 # docker network rm "$STACK_TAG"_default
-while [[ $(docker network ls --format {{.Name}} -f name=ubuntu-openmpi_default) != "" ]]; do
+docker network rm "$STACK_TAG"_default 2> /dev/null
+while [[ $(docker network ls --format {{.Name}} -f name="$STACK_TAG"_default) != "" ]]; do
 printf "."
 sleep 1
 done
