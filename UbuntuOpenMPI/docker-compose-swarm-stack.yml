@@ -20,7 +20,7 @@ services:
     # image: gianv9/docker-hpc:ubuntu-openmpi-latest
     image: ${IMAGE_NAME}
     ports: 
-      - "2222:22"
+      - "${MASTER_PORT}:22"
     user: root
     # entrypoint: ["mpi_bootstrap", "role=master", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     entrypoint: [

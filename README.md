@@ -21,7 +21,7 @@ Roadmap:
 
 The flavours are pushed to a [Docker Hub](https://hub.docker.com/r/gianv9/docker-hpc) repository as tags.
 
-Mentioned Authors Info/Websites:
+Mentioned Author's Info/Websites:
 - Rosa Filgueira
   - https://www.rosafilgueira.com/
   - https://www.linkedin.com/in/rosa-filgueira-vicente-8b2b2227/

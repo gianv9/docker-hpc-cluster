@@ -29,11 +29,12 @@ if [ -f ./docker-hpc.conf ];then
 else
         echo -e "\e[93m===> File docker-hpc.conf not found!"
         echo -e "===> Setting default parameters...\e[0m"
-        alpine_mpich=(gianv9/docker-hpc:alpine-mpich-latest ./alpine-mpich/cluster alpine-mpich)
-        ubuntu_openmpi=(gianv9/docker-hpc:ubuntu-openmpi-latest ./UbuntuOpenMPI ubuntu-openmpi)
+        alpine_mpich=(gianv9/docker-hpc:alpine-mpich-latest ./alpine-mpich/cluster alpine-mpich 2222)
+        ubuntu_openmpi=(gianv9/docker-hpc:ubuntu-openmpi-latest ./UbuntuOpenMPI ubuntu-openmpi 3333)
         DEFAULT_PROJECT_LOCATION=${alpine_mpich[1]}
         IMAGE_NAME=${alpine_mpich[0]}
         STACK_TAG=${alpine_mpich[2]}
+        MASTER_PORT=${alpine_mpich[3]}
         REPLICAS=4
         SHARED_FOLDER=./programs
         CLUSTER_LOGIN_COMMAND='ssh -q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1'
@@ -58,9 +59,11 @@ else
                         case $1 in
                         alpine-mpich)
                                 cd ${alpine_mpich[1]}
+                                MASTER_PORT=${alpine_mpich[3]}
                         ;;
                         ubuntu-openmpi)
                                 cd ${ubuntu_openmpi[1]}
+                                MASTER_PORT=${ubuntu_openmpi[3]}
                         ;;
                         *)      
                                 echo -e "\e[91m===> Unkown image $1!"
@@ -102,12 +105,14 @@ else
                                 IMAGE_NAME=${alpine_mpich[0]}
                                 cd ${alpine_mpich[1]}
                                 STACK_TAG=${alpine_mpich[2]}
+                                MASTER_PORT=${alpine_mpich[3]}
                                 CHANGED_DIRECTORY=1
                         ;;
                         ubuntu-openmpi)
                                 IMAGE_NAME=${ubuntu_openmpi[0]}
                                 cd ${ubuntu_openmpi[1]}
                                 STACK_TAG=${ubuntu_openmpi[2]}
+                                MASTER_PORT=${ubuntu_openmpi[3]}
                                 CHANGED_DIRECTORY=1
                         ;;
                         *)      
@@ -130,7 +135,7 @@ else
             -n|--node-replicas)
                 shift
                 if test $# -gt 0; then
-                        $REPLICAS=$1
+                        REPLICAS=$1
                 else
                         echo -e "\e[91m===> -wr|--worker-replicas"
                         echo -e "===> No parameter specified"
@@ -161,22 +166,22 @@ else
                         docker stack rm $STACK_TAG
                 fi
 
-                echo -e "\e[93m===> Removing The cluster network and nfs server\e[0m"
-                case $1 in
-                        alpine-mpich)
-                                cd ${alpine_mpich[1]}
-                        ;;
-                        ubuntu-openmpi)
-                                cd ${ubuntu_openmpi[1]}
-                        ;;
-                        *)      
-                                echo -e "\e[91m===> Unkown image $1!"
-                                echo -e "\e[93m===> using default image alpine-mpich instead\e[0m"
-                                cd $DEFAULT_PROJECT_LOCATION
-                                # break
-                        ;;
-                esac
-                CHANGED_DIRECTORY=1
+                # echo -e "\e[93m===> Removing The cluster network and nfs server\e[0m"
+                # case $1 in
+                #         alpine-mpich)
+                #                 cd ${alpine_mpich[1]}
+                #         ;;
+                #         ubuntu-openmpi)
+                #                 cd ${ubuntu_openmpi[1]}
+                #         ;;
+                #         *)      
+                #                 echo -e "\e[91m===> Unkown image $1!"
+                #                 echo -e "\e[93m===> using default image alpine-mpich instead\e[0m"
+                #                 cd $DEFAULT_PROJECT_LOCATION
+                #                 # break
+                #         ;;
+                # esac
+                # CHANGED_DIRECTORY=1
                 # docker-compose -f nfs-server.yml down
                 NodeID=$(docker node inspect --format '{{.ID}}' `hostname`)
                 echo -e "\n\033[33;7m\e[1;32m===> Removing node ($NodeID) tag 'script_bearer=true'\e[0m"
@@ -205,7 +210,7 @@ else
     done
 fi
 
-if [[ CHANGED_DIRECTORY != 1 ]];then
+if [[ $CHANGED_DIRECTORY != 1 ]];then
         cd $DEFAULT_PROJECT_LOCATION
 fi
 
@@ -236,7 +241,7 @@ fi
 # export REGISTRY_ADDR=$SCRIPT_BEARER_IP
 echo -e "\e[93m===> Environment variables:"
 echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\e[0m"
-export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_SHARED_FOLDER
+export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_PORT MASTER_SHARED_FOLDER
 
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
@@ -276,7 +281,8 @@ printf  "$WHALES_TOP_AA $REPLICAS\t     |\n$WHALES_BOTTOM_AA"
 # docker-compose -f nfs-server.yml up -d
 
 # sudo mount -v 192.168.1.62:/ /opt/nfs/volumes/debug
-
+echo -e "\n\033[33;7m\e[1;32m===> Waiting for previous $STACK_TAG cluster to die...\e[0m"
+docker stack rm $STACK_TAG 2> /dev/null
 echo -e "\n\033[33;7m\e[1;32m===> Waiting for previous cluster networks to die...\e[0m"
 # docker network rm "$STACK_TAG"_default
 docker network rm "$STACK_TAG"_default 2> /dev/null

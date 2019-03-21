@@ -25,7 +25,7 @@ services:
       "mpi_worker_service_name=worker"
       ]
     ports:
-      - "2222:22"
+      - "${MASTER_PORT}:22"
     # volumes:
     #   - type: volume
     #     source: vol_debug
