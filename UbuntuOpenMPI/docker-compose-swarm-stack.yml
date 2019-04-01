@@ -76,7 +76,7 @@ volumes:
   sshfs:
     driver: vieux/sshfs:latest
     driver_opts:
-      sshcmd: "${SCRIPT_BEARER_IP}:${CURRENT_DIR}/${SHARED_FOLDER}"
+      sshcmd: "${SCRIPT_BEARER_USER}${SCRIPT_BEARER_IP}:${CURRENT_DIR}/${SHARED_FOLDER}"
       # password: "${PASSWORD}"
       allow_other: ""
 

@@ -41,6 +41,7 @@ else
         # LOGIN=0
 fi
 
+
 if [ $# -eq 0 ];then
     echo -e "\e[93m===> No parameters specified"
     echo -e "===> Staring cluster using the default parameters...\e[0m"
@@ -189,14 +190,19 @@ else
                 shift
                 exit 0
                 ;;
-            --np|--no-push)
-                shift
-                NO_PUSH=1
+            --push)
+                # shift
+                PUSH=1
                 shift
                 ;;
-            --nb|--no-build)
+            --build)
+                # shift
+                BUILD=1
                 shift
-                NO_BUILD=1
+                ;;
+            --no-pki)
+                # shift
+                NO_PKI=1
                 shift
                 ;;
             *)
@@ -239,9 +245,10 @@ fi
 
 # set the environment variables so docker-compose and docker stack deploy can use them
 # export REGISTRY_ADDR=$SCRIPT_BEARER_IP
+SCRIPT_BEARER_USER="$(whoami)@"
 echo -e "\e[93m===> Environment variables:"
-echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\e[0m"
-export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_PORT MASTER_SHARED_FOLDER
+echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\nThis user is $SCRIPT_BEARER_USER\e[0m"
+export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_PORT MASTER_SHARED_FOLDER SCRIPT_BEARER_USER
 
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
@@ -262,12 +269,12 @@ docker node inspect $NodeID -f '{{ .Spec.Labels }}'
 # export NODE_IP=172.17.0.1
 # docker-compose -f launch-registry.yml up -d
 
-if [[ $NO_BUILD != 1 ]];then
+if [[ $BUILD == 1 ]];then
         echo -e "\n\033[33;7m\e[1;32m===> Building image...\e[0m"
         docker-compose -f build-and-upload.yml build
 fi
 
-if [[ $NO_PUSH != 1 ]];then
+if [[ $PUSH == 1 ]];then
         echo -e "\n\033[33;7m\e[1;32m===> Pushing image to the repository...\e[0m"
         docker-compose -f build-and-upload.yml push
 fi
@@ -294,9 +301,9 @@ done
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose-swarm-stack.yml $STACK_TAG
 
-echo -e "\n\033[33;7m\e[1;32m===> Waiting for the master node to spawn..."
+echo -e "\n\033[33;7m\e[1;32m===> Wait2222ing for the master node to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
-./wait-for-it.sh -t 0 172.17.0.1:2222 -- \
+./wait-for-it.sh -t 0 172.17.0.1:$MASTER_PORT -- \
         echo -e "\n\033[33;7m\e[1;32m===> Cluster Master Node is Ready\n\e[0m" 2> /dev/null
 eval $CLUSTER_LOGIN_COMMAND
