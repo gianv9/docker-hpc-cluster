@@ -160,8 +160,8 @@ else
             -s|--scale-workers)
                 shift
                 if test $# -gt 0; then
-                        echo -e "\e[93m===> Scaling $IMAGE_NAME:\e[0m"
-                        docker service scale "$IMAGE_NAME"_worker=$1
+                        echo -e "\e[93m===> Scaling $STACK_TAG:\e[0m"
+                        docker service scale "$STACK_TAG"_worker=$1
                 else
                         echo -e "\e[91m===> No number of workers specified for scaling\e[0m"
                 fi
