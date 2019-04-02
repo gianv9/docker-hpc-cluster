@@ -164,6 +164,7 @@ else
                         docker service scale "$IMAGE_NAME"_worker=$1
                 else
                         echo -e "\e[91m===> No number of workers specified for scaling\e[0m"
+                fi
                 shift
                 exit 0
                 ;;
