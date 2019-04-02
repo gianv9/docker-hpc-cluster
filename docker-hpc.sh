@@ -145,16 +145,26 @@ else
                 fi
                 shift
                 ;;
-            -s|--stack-tag)
+        #     -s|--stack-tag)
+        #         shift
+        #         if test $# -gt 0; then
+        #                 $STACK_TAG=$1
+        #         else
+        #                 echo -e "\e[91m===>-st|--stack-tag"
+        #                 echo -e "===> Stack Tag not Specified"
+        #                 echo -e "\e[93m===> Setting the stack tag to docker-hpc\e[0m"
+        #                 $STACK_TAG='docker-hpc'
+        #         fi
+        #         shift
+        #         ;;
+            -s|--scale-workers)
                 shift
                 if test $# -gt 0; then
-                        $STACK_TAG=$1
+                        echo -e "\e[93m===> Scaling $IMAGE_NAME:\e[0m"
+                        docker service scale "$IMAGE_NAME"_worker=$1
                 else
-                        echo -e "\e[91m===>-st|--stack-tag"
-                        echo -e "===> Stack Tag not Specified"
-                        echo -e "\e[93m===> Setting the stack tag to docker-hpc\e[0m"
-                        $STACK_TAG='docker-hpc'
-                fi
+                        echo -e "\e[91m===> No number of workers specified for scaling\e[0m"
+                        exit 0
                 shift
                 ;;
             -d|--down)
@@ -301,7 +311,7 @@ done
 echo -e "\n\033[33;7m\e[1;32m===> Deploying the cluster stack $STACK_TAG with $REPLICAS workers...\e[0m"
 docker stack deploy --compose-file docker-compose-swarm-stack.yml $STACK_TAG
 
-echo -e "\n\033[33;7m\e[1;32m===> Wait2222ing for the master node to spawn..."
+echo -e "\n\033[33;7m\e[1;32m===> Waiting for the master node to spawn..."
 echo -e "\e[93m===> Press CTRL-C if automatic login does not occur"
 echo -e "\e[93m===> Then login by using 'docker-hpc.sh -l $STACK_TAG'\n\e[0m"
 ./wait-for-it.sh -t 0 172.17.0.1:$MASTER_PORT -- \
