@@ -36,7 +36,7 @@ else
         STACK_TAG=${alpine_mpich[2]}
         MASTER_PORT=${alpine_mpich[3]}
         REPLICAS=4
-        SHARED_FOLDER=./programs
+        SHARED_FOLDER=programs
         CLUSTER_LOGIN_COMMAND='ssh -q -i ssh/id_rsa -o UserKnownHostsFile=/dev/null -o "StrictHostKeyChecking no" -p 2222 mpiuser@172.17.0.1'
         # LOGIN=0
 fi
@@ -237,7 +237,7 @@ CURRENT_DIR=$(pwd)
 # ok...the node is a manager...
 # but how many nodes are there?
 SWARM_SIZE=$(docker node ls --format "{{.Status}}"|grep -c Ready)
-MASTER_SHARED_FOLDER=$SHARED_FOLDER
+MASTER_SHARED_FOLDER="./$SHARED_FOLDER"
 if [[ $SWARM_SIZE == 1 ]]; then
 # if the swarm size is one, that means there is only one docker runtime to allocate the resources
 # so it doesn't make any sense to sshfs to itself
@@ -259,7 +259,7 @@ fi
 SCRIPT_BEARER_USER="$(whoami)@"
 echo -e "\e[93m===> Environment variables:"
 echo -e "IMAGE_NAME=$IMAGE_NAME\nSTACK_TAG=$STACK_TAG\nREPLICAS=$REPLICAS\nThe current dir is $CURRENT_DIR\nThis node ip is $SCRIPT_BEARER_IP\nThis user is $SCRIPT_BEARER_USER\e[0m"
-export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP WORKER_SHARED_FOLDER MASTER_PORT MASTER_SHARED_FOLDER SCRIPT_BEARER_USER
+export IMAGE_NAME REPLICAS STACK_TAG CURRENT_DIR SCRIPT_BEARER_IP SHARED_FOLDER WORKER_SHARED_FOLDER MASTER_PORT MASTER_SHARED_FOLDER SCRIPT_BEARER_USER
 
 # masterNodeIP=$(ip route get 1 | awk '{print $7;exit}')
 
