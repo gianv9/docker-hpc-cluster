@@ -1,0 +1,271 @@
+#------------------------------------------------------------
+#    Intel(R) MPI Benchmarks 2019 Update 2, MPI-IO part   
+#------------------------------------------------------------
+# Date                  : Fri Apr  5 04:53:05 2019
+# Machine               : x86_64
+# System                : Linux
+# Release               : 4.15.0-47-generic
+# Version               : #50-Ubuntu SMP Wed Mar 13 10:44:52 UTC 2019
+# MPI Version           : 3.1
+# MPI Thread Environment: 
+
+
+# Calling sequence was: 
+
+# IMB-IO
+
+# Minimum io portion in bytes:   0
+# Maximum io portion in bytes:   4194304
+#
+#
+#
+
+# List of Benchmarks to run:
+
+# S_Write_Indv
+# S_IWrite_Indv
+# S_Write_Expl
+# S_IWrite_Expl
+# P_Write_Indv
+# P_IWrite_Indv
+# P_Write_Shared
+# P_IWrite_Shared
+# P_Write_Priv
+# P_IWrite_Priv
+# P_Write_Expl
+# P_IWrite_Expl
+# C_Write_Indv
+# C_IWrite_Indv
+# C_Write_Shared
+# C_IWrite_Shared
+# C_Write_Expl
+# C_IWrite_Expl
+# S_Read_Indv
+# S_IRead_Indv
+# S_Read_Expl
+# S_IRead_Expl
+# P_Read_Indv
+# P_IRead_Indv
+# P_Read_Shared
+# P_IRead_Shared
+# P_Read_Priv
+# P_IRead_Priv
+# P_Read_Expl
+# P_IRead_Expl
+# C_Read_Indv
+# C_IRead_Indv
+# C_Read_Shared
+# C_IRead_Shared
+# C_Read_Expl
+# C_IRead_Expl
+# Open_Close
+
+
+# For nonblocking benchmarks:
+
+# Function CPU_Exploit obtains an undisturbed
+# performance of  285.90 MFlops
+
+#---------------------------------------------------
+# Benchmarking S_Write_Indv 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#---------------------------------------------------
+#
+#    MODE: AGGREGATE 
+#
+       #bytes #repetitions      t[usec]   Mbytes/sec
+            0         1000         9.13         0.00
+            1         1000       108.55         0.01
+            2         1000       110.01         0.02
+            4         1000        95.07         0.04
+            8         1000       131.85         0.06
+           16         1000       110.48         0.14
+           32         1000       131.54         0.24
+           64         1000       144.57         0.44
+          128         1000       175.13         0.73
+          256         1000       248.09         1.03
+          512         1000       371.22         1.38
+         1024         1000       697.76         1.47
+         2048         1000      1323.99         1.55
+         4096          346      2438.78         1.68
+         8192          346      5358.46         1.53
+        16384          346      9673.59         1.69
+        32768          346     18806.73         1.74
+        65536          244     35026.87         1.87
+       131072           50     75318.90         1.74
+       262144           50    138438.06         1.89
+       524288           33    272048.34         1.93
+      1048576           15    557529.19         1.88
+      2097152            9   1012257.62         2.07
+      4194304            3   2026796.37         2.07
+
+#---------------------------------------------------
+# Benchmarking S_Write_Indv 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#---------------------------------------------------
+#
+#    MODE: NON-AGGREGATE 
+#
+       #bytes #repetitions      t[usec]   Mbytes/sec
+            0          100      8502.24         0.00
+            1          100     71480.56         0.00
+            2          100    174418.89         0.00
+            4          100     58933.45         0.00
+            8          100    120750.98         0.00
+           16          100     87439.39         0.00
+           32           11     97706.41         0.00
+           64           11     96714.06         0.00
+          128           11    124091.37         0.00
+          256           11    120392.66         0.00
+          512           11    112194.76         0.00
+         1024           11     58879.71         0.02
+         2048           11     73332.65         0.03
+         4096           11    190085.89         0.02
+         8192           11    116217.91         0.07
+        16384           11    131841.01         0.12
+        32768           11    115981.68         0.28
+        65536           11    178696.88         0.37
+       131072           11    181370.51         0.72
+       262144            9    233536.40         1.12
+       524288            6    558396.51         0.94
+      1048576            6   1252536.78         0.84
+      2097152            6   1275817.08         1.64
+      4194304            5   2332720.57         1.80
+
+#-----------------------------------------------------------------------------
+# Benchmarking S_IWrite_Indv 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#-----------------------------------------------------------------------------
+#
+#    MODE: AGGREGATE 
+#
+       #bytes #repetitions t_ovrl[usec] t_pure[usec]  t_CPU[usec]   overlap[%]
+            0          935     14259.37        16.90     10091.61         0.00
+            1          935     13978.30       140.77     10091.61         0.00
+            2          935     15862.43       117.68     10091.61         0.00
+            4          935     15072.42       120.51     10091.61         0.00
+            8          935     14810.88       155.63     10091.61         0.00
+           16          935     15819.17       117.35     10091.61         0.00
+           32          935     15415.00       145.35     10091.61         0.00
+           64          935     18345.81       143.07     10091.61         0.00
+          128          935     14954.42       223.09     10091.61         0.00
+          256           12     26549.19      4638.22     10091.61         0.00
+          512           12     20528.66      4103.21     10091.61         0.00
+         1024           12     22873.69     35228.08     10091.61       100.00
+         2048           12     19571.97      5942.97     10091.61         0.00
+         4096           12     20415.20      7459.59     10091.61         0.00
+         8192           12     18105.06     12490.54     10091.61        44.36
+        16384           12     27124.74     46890.92     10091.61       100.00
+        32768           12     28142.07     25488.22     10091.61        73.70
+        65536           12     43159.57     61052.83     10091.61       100.00
+       131072           12     68733.38     75942.69     10091.61       100.00
+       262144           12    148728.67    157577.58     10091.61       100.00
+       524288           12    357088.27    320545.72     10091.61         0.00
+      1048576           12    529212.90    588189.02     10091.61       100.00
+      2097152            9   1007781.19   1172073.79     10091.61       100.00
+      4194304 time-out.; Time limit (secs_per_sample * msg_sizes_list_len) is over; use "-time X" or SECS_PER_SAMPLE=X (IMB_settings.h) to increase time limit.
+
+#---------------------------------------------------
+# Benchmarking S_Write_Expl 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#---------------------------------------------------
+#
+#    MODE: AGGREGATE 
+#
+       #bytes #repetitions      t[usec]   Mbytes/sec
+            0         1000         8.49         0.00
+            1         1000       110.54         0.01
+            2         1000       120.07         0.02
+            4         1000       121.38         0.03
+            8          449       192.29         0.04
+           16          449       227.94         0.07
+           32          449       202.88         0.16
+           64          449       223.76         0.29
+          128          449       249.51         0.51
+          256          449      1053.54         0.24
+          512          449       459.55         1.11
+         1024          449       790.42         1.30
+         2048          449      1356.33         1.51
+         4096          449      6623.81         0.62
+         8192          449      7582.94         1.08
+        16384            8     19107.19         0.86
+        32768            8     27433.53         1.19
+        65536            8    100636.70         0.65
+       131072            8    148514.66         0.88
+       262144            8    171407.77         1.53
+       524288            8    387872.21         1.35
+      1048576            8    561048.00         1.87
+      2097152            8   2664182.22         0.79
+      4194304            1  14098691.58         0.30
+
+#---------------------------------------------------
+# Benchmarking S_Write_Expl 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#---------------------------------------------------
+#
+#    MODE: NON-AGGREGATE 
+#
+       #bytes #repetitions      t[usec]   Mbytes/sec
+            0          100     14973.90         0.00
+            1          100     90990.63         0.00
+            2           13     45164.83         0.00
+            4           12     45880.93         0.00
+            8           12    227833.79         0.00
+           16           12     61836.02         0.00
+           32           12     48969.67         0.00
+           64           12     73252.46         0.00
+          128           12     66285.43         0.00
+          256           12     59944.04         0.00
+          512           12    101484.61         0.01
+         1024           12     50817.42         0.02
+         2048           12     87416.19         0.02
+         4096           12     69179.83         0.06
+         8192           12    124437.78         0.07
+        16384           12    152623.61         0.11
+        32768           12    155976.08         0.21
+        65536           12    250707.23         0.26
+       131072           12    989022.87         0.13
+       262144            7    317791.63         0.82
+       524288            7    544845.91         0.96
+      1048576            3   2926762.48         0.36
+      2097152            3  53102279.30         0.04
+      4194304 time-out.; Time limit (secs_per_sample * msg_sizes_list_len) is over; use "-time X" or SECS_PER_SAMPLE=X (IMB_settings.h) to increase time limit.
+
+#-----------------------------------------------------------------------------
+# Benchmarking S_IWrite_Expl 
+# #processes = 1 
+# ( 3 additional processes waiting in MPI_Barrier)
+#-----------------------------------------------------------------------------
+#
+#    MODE: AGGREGATE 
+#
+       #bytes #repetitions t_ovrl[usec] t_pure[usec]  t_CPU[usec]   overlap[%]
+            0         1000     17743.25         8.24     10091.61         0.00
+--------------------------------------------------------------------------
+ORTE was unable to reliably start one or more daemons.
+This usually is caused by:
+
+* not finding the required libraries and/or binaries on
+  one or more nodes. Please check your PATH and LD_LIBRARY_PATH
+  settings, or configure OMPI with --enable-orterun-prefix-by-default
+
+* lack of authority to execute on one or more specified nodes.
+  Please verify your allocation and authorities.
+
+* the inability to write startup files into /tmp (--tmpdir/orte_tmpdir_base).
+  Please check with your sys admin to determine the correct location to use.
+
+*  compilation of the orted with dynamic libraries when static are required
+  (e.g., on Cray). Please check your configure cmd line and consider using
+  one of the contrib/platform definitions for your system type.
+
+* an inability to create a connection back to mpirun due to a
+  lack of common network interfaces and/or no route found between
+  them. Please check network connectivity (including firewalls
+  and network routing requirements).
+--------------------------------------------------------------------------
