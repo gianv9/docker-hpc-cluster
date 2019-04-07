@@ -6,14 +6,14 @@ services:
     image: itsthenetwork/nfs-server-alpine:latest
     privileged: true
     volumes:
-      - "data:/nfsshare"
+      - "./temp:/nfsshare"
     environment:
       - SHARED_DIRECTORY=/nfsshare
     ports:
       - "2049:2049"
 
-volumes:
-  data:
+#volumes:
+#  data:
 
 # networks:
 #   default:
