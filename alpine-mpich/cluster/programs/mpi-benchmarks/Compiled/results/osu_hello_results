@@ -1,0 +1,32 @@
+Running test: osu_hello
+--------------------------------
+# OSU MPI Hello World Test v5.6.1
+This is a test with 4 processes
+--------------------------------
+--------------------------------
+
+
+Running test: osu_init
+--------------------------------
+# OSU MPI Init Test v5.6.1
+nprocs: 4, min: 43 ms, max: 47 ms, avg: 44 ms
+--------------------------------
+--------------------------------
+
+
+Running test: osu_hello
+--------------------------------
+# OSU MPI Hello World Test v5.6.1
+This is a test with 2 processes
+--------------------------------
+--------------------------------
+
+
+Running test: osu_init
+--------------------------------
+# OSU MPI Init Test v5.6.1
+nprocs: 2, min: 23 ms, max: 23 ms, avg: 23 ms
+--------------------------------
+--------------------------------
+
+
