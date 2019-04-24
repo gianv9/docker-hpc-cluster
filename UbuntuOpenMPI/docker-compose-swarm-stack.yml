@@ -34,8 +34,14 @@ services:
       placement:
         constraints:
           - node.labels.script_bearer == true
+      resources:
+        limits:
+          cpus: '1'
+        reservations:
+          cpus: '0.25'
     volumes:
       - "${MASTER_SHARED_FOLDER}:/home/mpiuser/shared"
+
     # entrypoint: ["bash -c auto_update_hosts role=master mpi_master_service_name=master mpi_worker_service_name=worker openmpi_hostfile='/etc/openmpi/openmpi-default-hostfile' && /usr/sbin/sshd"]
     # entrypoint: ["/usr/sbin/sshd", "-D"]
     # command:
@@ -57,6 +63,11 @@ services:
     # entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
     deploy:
       replicas: ${REPLICAS}
+      resources:
+        limits:
+          cpus: '1'
+        reservations:
+          cpus: '0.25'
       # placement:
       #   constraints:
       #     - node.labels.script_bearer != true
