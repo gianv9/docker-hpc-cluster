@@ -1,21 +1,7 @@
 version: '3.3'
 
-# volumes:
-#   vol_debug:
-#     driver: local
-#     driver_opts:
-#       type: "nfs"
-#       o: addr=192.168.1.115,nolock,soft,rw
-#       device: ":/opt/nfs/volumes/debug"
-
 services:
-  # registry:
-  #   image: registry
-  #   ports:
-  #     - "${REGISTRY_PORT}:5000"
-
   master:
-    # image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
     image: ${IMAGE_NAME}
     user: root
     entrypoint: [
@@ -26,35 +12,26 @@ services:
       ]
     ports:
       - "${MASTER_PORT}:22"
-    # volumes:
-    #   - type: volume
-    #     source: vol_debug
-    #     target: /data
-    #     volume:
-    #       nocopy: true
-    # networks:
-    #   - cluster_net
     deploy:
       placement:
         constraints:
           - node.labels.script_bearer == true
+      resources:
+        limits:
+          cpus: '1'
     volumes:
       - "${MASTER_SHARED_FOLDER}:/project/shared"
 
   worker:
-    # image: ${REGISTRY_ADDR}:5000/${IMAGE_NAME}
     image: ${IMAGE_NAME}
     deploy:
       replicas: ${REPLICAS}
+      resources:
+        limits:
+          cpus: '1'
     user: root
     entrypoint: ["mpi_bootstrap", "role=worker", "mpi_master_service_name=master", "mpi_worker_service_name=worker"]
-  #   networks:
-  # #     - cluster_net
-    deploy:
-      replicas: ${REPLICAS}
-      # placement:
-      #   constraints:
-      #     - node.labels.script_bearer != true
+
     volumes:
       # when the swarm has more than one node, ${SHARED_FOLDER}=sshsf
       # so the vieux plugin volume is used
@@ -67,22 +44,3 @@ volumes:
       sshcmd: "${SCRIPT_BEARER_USER}${SCRIPT_BEARER_IP}:${CURRENT_DIR}/${SHARED_FOLDER}"
       # password: "${PASSWORD}"
       allow_other: ""
-
-# networks:
-#   default:
-#     external:
-#       name: cluster_net
-
-# volumes:
-#   nfs_share:
-
-# networks:
-#   # net:
-#   default:
-#     driver: overlay
-#     # enable_ipv6: true
-#     ipam:
-#       driver: default
-#       config:
-#       -
-#         subnet: 10.0.9.0/24
