@@ -9,7 +9,7 @@ This is a test with 2 processes
 Running test: osu_init
 --------------------------------
 # OSU MPI Init Test v5.6.1
-nprocs: 2, min: 136 ms, max: 140 ms, avg: 138 ms
+nprocs: 2, min: 181 ms, max: 181 ms, avg: 181 ms
 --------------------------------
 --------------------------------
 
