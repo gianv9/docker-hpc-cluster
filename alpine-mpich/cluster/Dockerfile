@@ -14,9 +14,9 @@ FROM gianv9/docker-hpc:alpine-mpich-onbuild
 # the current working directory in this Docker image
 COPY ./programs .
 RUN sudo chown -R mpiuser:mpiuser ./*
-RUN sudo chmod +x *.py
+# RUN sudo chmod +x *.py
 # Normal build command
-RUN mpicc -o mpi_hello_world mpi_hello_world.c
+# RUN mpicc -o mpi_hello_world mpi_hello_world.c
 
 # ####################
 # For Docker beginner:
