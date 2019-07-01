@@ -17,7 +17,9 @@ RUN apk add --no-cache python && \
     rm -r /root/.cache && \
     apk add python-dev && \
     apk add python3 && \
-    apk add python3-dev
+    apk add python3-dev && \
+    pip install numpy && \
+    pip install simple-crypt
 
 
 #### INSTALL MPICH ####
