@@ -60,12 +60,12 @@ RUN export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openmpi/lib/
 #---------------------------------------------------------------
 
 COPY ./programs /home/mpiuser
-RUN chmod +x /home/mpiuser/*.py
+# RUN chmod +x /home/mpiuser/*.py
 
 #---------------------------------------------------------------
 #Compiling Hello World and MPI-Splitter
 #---------------------------------------------------------------
 
-RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
+# RUN mpicc -o /home/mpiuser/MPI-Splitter/HW /home/mpiuser/MPI-Splitter/HW.c && mpicc -o /home/mpiuser/MPI-Splitter/Send1 /home/mpiuser/MPI-Splitter/CEDS.c
 RUN chown -R mpiuser:mpiuser /home/mpiuser
-RUN echo 'Why, Hello there!'
+# RUN echo 'Why, Hello there!'
