@@ -1,3 +1,9 @@
 **/.directory
 # **/swarm.conf
 myProject.tar.gz
+
+**/programs
+!**/programs/mpi-benchmarks
+
+*.tar
+.vscode
