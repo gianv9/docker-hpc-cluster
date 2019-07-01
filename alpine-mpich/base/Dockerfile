@@ -19,6 +19,7 @@ RUN apk add --no-cache python && \
     apk add python3 && \
     apk add python3-dev && \
     pip install numpy && \
+    apk add py2-pip libffi-dev openssl-dev && \
     pip install simple-crypt
 
 
