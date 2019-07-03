@@ -60,6 +60,7 @@ RUN rm -rf /tmp/*
 
 #### INSTALL mpi4py ####
 RUN env MPICC=/usr/local/bin/mpicc pip install mpi4py
+RUN env MPICC=/usr/local/bin/mpicc pip3 install mpi4py
 
 #### INSTALL NFS SUPPORT ####
 RUN apk add --no-cache nfs-utils rpcbind
