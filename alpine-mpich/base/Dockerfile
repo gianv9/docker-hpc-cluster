@@ -18,10 +18,10 @@ RUN apk add --no-cache python && \
     apk add python-dev && \
     apk add python3 && \
     apk add python3-dev && \
-    pip install numpy && \
-    apk add py2-pip libffi-dev openssl-dev && \
-    apk add py-virtualenv && \
-    apk add py3-virtualenv
+    pip install numpy
+#     apk add py2-pip libffi-dev openssl-dev && \
+#     apk add py-virtualenv && \
+#     apk add py3-virtualenv
 
 
 #### INSTALL MPICH ####
