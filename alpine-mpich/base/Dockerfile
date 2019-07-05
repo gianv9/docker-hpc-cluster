@@ -6,7 +6,10 @@ LABEL mantainer=["Gianfranco A. Verrocchi C.","José F. Hernández B."] creator=
 
 ARG REQUIRE="sudo build-base"
 RUN apk update && apk upgrade \
-      && apk add --no-cache ${REQUIRE}
+      && apk add --no-cache ${REQUIRE} \
+      && apk add git \
+      && apk add libffi-dev \
+      && apk add openssl-dev
 
 #### INSTALL PYTHON ####
 # see: https://hub.docker.com/r/frolvlad/alpine-python2/dockerfile
@@ -18,7 +21,9 @@ RUN apk add --no-cache python && \
     apk add python-dev && \
     apk add python3 && \
     apk add python3-dev && \
-    pip install numpy
+    apk add py-pip && \
+    pip install virtualenv && \
+    pip install numpy 
 #     apk add py2-pip libffi-dev openssl-dev && \
 #     apk add py-virtualenv && \
 #     apk add py3-virtualenv
