@@ -29,6 +29,6 @@ FROM gianv9/docker-hpc:alpine-mpich-onbuild
 # To switch to root:    USER root
 # To switch back to default user: USER ${USER}
 
-# create the python virtual env on the shared directory
-RUN python3.6 -m venv /project/shared/pyVirtEnv
-RUN source /project/shared/pyVirtEnv/bin/activate && pip3 install simple-crypt && pip3 install mpi4py && deactivate
+# create the python virtual env on the main directory
+RUN python3.6 -m venv /project/pyVirtEnv
+RUN source /project/pyVirtEnv/bin/activate && pip3 install simple-crypt && pip3 install mpi4py && deactivate
