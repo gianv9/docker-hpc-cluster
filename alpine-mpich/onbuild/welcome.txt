@@ -32,4 +32,11 @@ To obtain hostfile manually and provide to MPI by yourself:
 $ get_hosts > hosts
 $ mpirun -f hosts hostname
 
-For more information: https://github.com/NLKNguyen/alpine-mpich/
+Remember to specify the path (absolute or relative) of the file,
+here are some examples:
+$ mpirun python3 ./mpiScript.py
+$ mpirun /project/shared/helloworld
+For more information: 
+https://github.com/NLKNguyen/alpine-mpich/
+https://github.com/gianv9/docker-hpc-cluster
+

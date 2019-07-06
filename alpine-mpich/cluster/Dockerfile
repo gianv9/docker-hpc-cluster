@@ -12,8 +12,10 @@ FROM gianv9/docker-hpc:alpine-mpich-onbuild
 
 # Copy the content of `project` directory in the host machine to 
 # the current working directory in this Docker image
-COPY ./programs .
-RUN sudo chown -R mpiuser:mpiuser ./*
+# COPY ./programs .
+
+# RUN sudo chown -R mpiuser:mpiuser ./*
+
 # RUN sudo chmod +x *.py
 # Normal build command
 # RUN mpicc -o mpi_hello_world mpi_hello_world.c
@@ -26,3 +28,7 @@ RUN sudo chown -R mpiuser:mpiuser ./*
 
 # To switch to root:    USER root
 # To switch back to default user: USER ${USER}
+
+# create the python virtual env on the shared directory
+RUN python3.6 -m venv /project/shared/pyVirtEnv
+RUN source /project/shared/pyVirtEnv/bin/activate && pip3 install simple-crypt && pip3 install mpi4py && deactivate
