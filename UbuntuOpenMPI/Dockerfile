@@ -8,9 +8,12 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y openssh-server python-mpi4py python-numpy \
-            python-virtualenv python-scipy gcc gfortran openmpi-doc binutils \
-	    nano net-tools dnsutils zip git openmpi-bin openmpi-common libopenmpi-dev
+    apt-get install -y openssh-server python3-mpi4py python3-numpy \
+            python3-venv python3-scipy gcc gfortran openmpi-doc binutils \
+            nano net-tools dnsutils zip git openmpi-bin openmpi-common libopenmpi-dev \
+            python3-dev python3-pip libffi-dev && \
+    pip install --upgrade pip setuptools && \
+    pip install simple-crypt
 RUN mkdir /var/run/sshd
 RUN echo 'root:mpi' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
