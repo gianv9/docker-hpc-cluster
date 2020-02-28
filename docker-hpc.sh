@@ -95,6 +95,8 @@ else
                 echo "-h  | --help                      Show this help message"
                 echo "-wr | --worker-replicas number    Set the number of worker nodes replicas to be spawned"
                 echo "-tg | --stack-tag name            Set the name of the stack to be deployed"
+                echo "-s  | --scale-workers             Scale the worker replicas"
+                echo "-l  | --login name                Log into the deployed stack"
                 echo "-d  | --down stack-tag            Remove a stack "
                 exit 0
                 ;;
